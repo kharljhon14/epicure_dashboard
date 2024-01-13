@@ -1,5 +1,3 @@
-import { Button } from '@nextui-org/react';
-
 export default function Home() {
   return (
     <div>
@@ -9,7 +7,6 @@ export default function Home() {
         quibusdam facere, corporis quas dicta amet facilis quae in eos nesciunt
         repellat quia quos magnam enim sequi, id quo voluptates?
       </p>
-      <Button color="primary">Test</Button>
     </div>
   );
 }

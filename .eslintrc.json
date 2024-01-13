@@ -4,8 +4,8 @@
     "airbnb",
     "airbnb-typescript",
     "prettier",
-    "plugin:prettier/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:prettier/recommended"
   ],
   "ignorePatterns": ["**/*.config.js"],
   "parserOptions": {
@@ -43,8 +43,6 @@
     "import/prefer-default-export": "off"
   },
   "settings": {
-    "tailwindcss": {
-      "whitelist": ["text-xl", "text-sx"]
-    }
+    "tailwindcss": {}
   }
 }
