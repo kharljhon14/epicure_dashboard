@@ -5,7 +5,7 @@
     "airbnb-typescript",
     "prettier",
     "plugin:prettier/recommended",
-    "plugin:tailwindcss/recommend"
+    "plugin:tailwindcss/recommended"
   ],
   "ignorePatterns": ["**/*.config.js"],
   "parserOptions": {
@@ -29,7 +29,7 @@
         "endOfLine": "auto"
       }
     ],
-    "jsx-a11y/label-has-associated-control": "off",
+
     "react/jsx-props-no-spreading": "off",
     "react/button-has-type": "off",
     "react-hooks/exhaustive-deps": "off",
@@ -41,5 +41,10 @@
     "react/jsx-uses-react": "off",
     "no-underscore-dangle": "off",
     "import/prefer-default-export": "off"
+  },
+  "settings": {
+    "tailwindcss": {
+      "whitelist": ["text-xl", "text-sx"]
+    }
   }
 }
