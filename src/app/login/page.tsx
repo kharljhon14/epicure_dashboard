@@ -1,5 +1,6 @@
-import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
-import Link from 'next/link';
+import { Card, CardBody, CardHeader } from '@nextui-org/react';
+
+import LoginForm from '@/features/auth/login/loginForm';
 
 export default function SignInPage() {
   return (
@@ -9,36 +10,7 @@ export default function SignInPage() {
           <h1 className="text-2xl font-semibold">Login your account</h1>
         </CardHeader>
         <CardBody>
-          <form action="">
-            <div className="space-y-4">
-              <Input placeholder="Username" />
-              <Input
-                type="password"
-                placeholder="Password"
-              />
-
-              <div className="flex justify-between text-sm">
-                <Link
-                  href="/"
-                  className=" hover:underline"
-                >
-                  Forgot Password
-                </Link>
-                <Link
-                  href="/"
-                  className="text-blue-500 hover:underline"
-                >
-                  Create Account
-                </Link>
-              </div>
-            </div>
-            <Button
-              color="primary"
-              className="mt-6 w-full"
-            >
-              Log In
-            </Button>
-          </form>
+          <LoginForm />
         </CardBody>
       </Card>
     </div>
