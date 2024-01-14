@@ -11,6 +11,7 @@ export default function SignUpForm() {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
@@ -19,6 +20,7 @@ export default function SignUpForm() {
     <form action="">
       <div className="space-y-4">
         <Input placeholder="epicure@mail.com" />
+
         <Input
           type={passwordVisible ? 'text' : 'password'}
           placeholder="Password"
@@ -32,6 +34,7 @@ export default function SignUpForm() {
             </button>
           }
         />
+
         <Input
           type={confirmPasswordVisible ? 'text' : 'password'}
           placeholder="Confirm Password"
