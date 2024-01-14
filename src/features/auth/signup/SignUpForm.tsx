@@ -19,6 +19,7 @@ export default function SignUpForm() {
   return (
     <form action="">
       <div className="space-y-4">
+        <Input placeholder="Name" />
         <Input placeholder="epicure@mail.com" />
 
         <Input
