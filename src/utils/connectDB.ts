@@ -19,8 +19,6 @@ export default async function connectDB() {
   if (!cached.promise) {
     const options = {
       bufferCommands: false,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
     };
 
     cached.promise = mongoose
