@@ -29,7 +29,39 @@
         "endOfLine": "auto"
       }
     ],
-
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/control-has-associated-label": [
+      2,
+      {
+        "labelAttributes": ["label"],
+        "controlComponents": ["CustomComponent"],
+        "ignoreElements": [
+          "audio",
+          "canvas",
+          "embed",
+          "input",
+          "textarea",
+          "tr",
+          "video",
+          "button",
+          "select",
+          "radio"
+        ],
+        "ignoreRoles": [
+          "grid",
+          "listbox",
+          "menu",
+          "menubar",
+          "radiogroup",
+          "row",
+          "tablist",
+          "toolbar",
+          "tree",
+          "treegrid"
+        ],
+        "depth": 3
+      }
+    ],
     "react/jsx-props-no-spreading": "off",
     "react/button-has-type": "off",
     "react-hooks/exhaustive-deps": "off",
