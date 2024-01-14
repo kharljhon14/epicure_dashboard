@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+import { hash } from 'bcrypt';
 import type { Model, ObjectId } from 'mongoose';
 import { model, models, Schema } from 'mongoose';
 
@@ -37,6 +39,13 @@ const userSchema = new Schema<UserDocument>({
     default: false,
   },
   tokens: [String],
+});
+
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password'))
+    this.password = await hash(this.password, 10);
+
+  next();
 });
 
 const User = models.User || model('User', userSchema);
