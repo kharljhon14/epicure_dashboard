@@ -1,7 +1,7 @@
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import Image from 'next/image';
 
-import SignUpForm from '@/features/auth/signup/SignUpForm';
+import VerifyTokenForm from '@/features/auth/signup/VerifyToken';
 
 export default function Home() {
   return (
@@ -28,7 +28,8 @@ export default function Home() {
           </div>
         </CardHeader>
         <CardBody>
-          <SignUpForm />
+          {/* <SignUpForm /> */}
+          <VerifyTokenForm />
         </CardBody>
       </Card>
     </div>
