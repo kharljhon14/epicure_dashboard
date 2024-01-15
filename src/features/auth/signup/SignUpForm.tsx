@@ -60,13 +60,15 @@ export default function SignUpForm() {
       <div className="space-y-4">
         <Input
           {...register('name')}
-          placeholder="Name*"
+          placeholder="John Doe"
+          label="Name*"
           isInvalid={!!errors.name?.message}
           errorMessage={errors.name?.message && errors.name.message}
         />
         <Input
           {...register('email')}
-          placeholder="epicure@mail.com*"
+          placeholder="epicure@mail.com"
+          label="Email*"
           isInvalid={!!errors.email?.message}
           errorMessage={errors.email?.message && errors.email.message}
         />
@@ -74,7 +76,8 @@ export default function SignUpForm() {
         <Input
           {...register('password')}
           type={passwordVisible ? 'text' : 'password'}
-          placeholder="Password*"
+          placeholder="**********"
+          label="Password*"
           endContent={
             <button
               className="text-2xl text-neutral-500 focus:outline-none"
@@ -91,7 +94,8 @@ export default function SignUpForm() {
         <Input
           {...register('confirm_password')}
           type={confirmPasswordVisible ? 'text' : 'password'}
-          placeholder="Confirm Password*"
+          placeholder="**********"
+          label="Confirm Password*"
           endContent={
             <button
               className="text-2xl text-neutral-500 focus:outline-none"

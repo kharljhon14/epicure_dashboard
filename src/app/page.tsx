@@ -19,6 +19,7 @@ export default function Home() {
                 width: 'auto',
                 objectFit: 'cover',
                 borderRadius: '100%',
+                objectPosition: 'center',
               }}
             />
             <h1 className="text-3xl font-extrabold text-neutral-800">

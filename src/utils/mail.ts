@@ -25,10 +25,7 @@ interface Profile {
   email: string;
 }
 
-export async function sendVericifationTokenEmail(
-  token: string,
-  profile: Profile
-) {
+export async function sendVericifationTokenEmail(profile: Profile) {
   const transport = generateEmailTransporter();
 
   const welcomeMessage = `Greetings, ${profile.name}! Welcome to Epicure. Kindly use the provided OTP to verify your email.`;
@@ -42,7 +39,7 @@ export async function sendVericifationTokenEmail(
       message: welcomeMessage,
       logo: 'cid:logo',
       link: '#',
-      btnTitle: token,
+      btnTitle: 'Verify',
     }),
     attachments: [
       {
