@@ -1,4 +1,7 @@
 import nodemailer from 'nodemailer';
+import path from 'path';
+
+import { generateTemplate } from '@/templates/template';
 
 import {
   MAILTRAP_PASSWORD,
@@ -34,7 +37,19 @@ export async function sendVericifationTokenEmail(
     to: profile.email,
     from: VERIFICATION_EMAIL,
     subject: 'Welcome to Epicure!',
-    html: `<h1>${welcomeMessage}</h1>
-            <span>${token}</span>`,
+    html: generateTemplate({
+      title: 'Welcome to Epicure!',
+      message: welcomeMessage,
+      logo: 'cid:logo',
+      link: '#',
+      btnTitle: token,
+    }),
+    attachments: [
+      {
+        filename: 'logo.jpg',
+        path: path.join(__dirname, '../../../../../public/logo.jpg'),
+        cid: 'logo',
+      },
+    ],
   });
 }
