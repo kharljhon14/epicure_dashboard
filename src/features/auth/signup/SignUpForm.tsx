@@ -13,7 +13,7 @@ import { CreateUserSchema, type CreateUserSchemaType } from '@/schemas/user';
 export default function SignUpForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -21,14 +21,13 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     control,
-
-    formState: { errors, isLoading },
+    formState: { errors },
   } = useForm<CreateUserSchemaType>({
     resolver: zodResolver(CreateUserSchema),
   });
 
   const onSubmit: SubmitHandler<CreateUserSchemaType> = async (data) => {
-    setLoading(true);
+    setIsLoading(true);
     const res = await fetch('/api/signup', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -39,9 +38,10 @@ export default function SignUpForm() {
     } else {
       const { error } = await res.json();
 
+      // TODO: Make this an inline alert
       alert(error);
     }
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const togglePasswordVisibility = () => {
@@ -60,13 +60,13 @@ export default function SignUpForm() {
       <div className="space-y-4">
         <Input
           {...register('name')}
-          placeholder="Name"
+          placeholder="Name*"
           isInvalid={!!errors.name?.message}
           errorMessage={errors.name?.message && errors.name.message}
         />
         <Input
           {...register('email')}
-          placeholder="epicure@mail.com"
+          placeholder="epicure@mail.com*"
           isInvalid={!!errors.email?.message}
           errorMessage={errors.email?.message && errors.email.message}
         />
@@ -74,7 +74,7 @@ export default function SignUpForm() {
         <Input
           {...register('password')}
           type={passwordVisible ? 'text' : 'password'}
-          placeholder="Password"
+          placeholder="Password*"
           endContent={
             <button
               className="text-2xl text-neutral-500 focus:outline-none"
@@ -91,7 +91,7 @@ export default function SignUpForm() {
         <Input
           {...register('confirm_password')}
           type={confirmPasswordVisible ? 'text' : 'password'}
-          placeholder="Confirm Password"
+          placeholder="Confirm Password*"
           endContent={
             <button
               className="text-2xl text-neutral-500 focus:outline-none"
@@ -130,7 +130,8 @@ export default function SignUpForm() {
         color="primary"
         className="mt-6 w-full"
         size="lg"
-        isLoading={isLoading || loading}
+        isLoading={isLoading}
+        disabled={isLoading}
         type="submit"
       >
         Sign Up
