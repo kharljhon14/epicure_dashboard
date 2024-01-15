@@ -2,6 +2,8 @@ import User from '@/models/user';
 import type { CreateUserSchemaType } from '@/schemas/user';
 import { CreateUserSchema } from '@/schemas/user';
 import connectDB from '@/utils/connectDB';
+import { generateToken } from '@/utils/helper';
+import { sendVericifationTokenEmail } from '@/utils/mail';
 import { schemaValidator } from '@/utils/schemaValidator';
 
 export async function POST(req: Request) {
@@ -27,6 +29,13 @@ export async function POST(req: Request) {
   });
 
   await newUser.save();
+
+  const token = generateToken();
+
+  sendVericifationTokenEmail(token, {
+    name: newUser.name,
+    email: newUser.email,
+  });
 
   return Response.json({
     user: { _id: newUser._id, name: newUser.name, email: newUser.email },
