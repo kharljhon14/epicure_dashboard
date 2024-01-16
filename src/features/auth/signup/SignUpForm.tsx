@@ -60,23 +60,22 @@ export default function SignUpForm() {
       <div className="space-y-4">
         <Input
           {...register('name')}
-          placeholder="John Doe"
           label="Name*"
           isInvalid={!!errors.name?.message}
           errorMessage={errors.name?.message && errors.name.message}
+          disabled={isLoading}
         />
         <Input
           {...register('email')}
-          placeholder="epicure@mail.com"
           label="Email*"
           isInvalid={!!errors.email?.message}
           errorMessage={errors.email?.message && errors.email.message}
+          disabled={isLoading}
         />
 
         <Input
           {...register('password')}
           type={passwordVisible ? 'text' : 'password'}
-          placeholder="**********"
           label="Password*"
           endContent={
             <button
@@ -89,12 +88,12 @@ export default function SignUpForm() {
           }
           isInvalid={!!errors.password?.message}
           errorMessage={errors.password?.message && errors.password.message}
+          disabled={isLoading}
         />
 
         <Input
           {...register('confirm_password')}
           type={confirmPasswordVisible ? 'text' : 'password'}
-          placeholder="**********"
           label="Confirm Password*"
           endContent={
             <button
@@ -109,6 +108,7 @@ export default function SignUpForm() {
           errorMessage={
             errors.confirm_password?.message && errors.confirm_password.message
           }
+          disabled={isLoading}
         />
         <Controller
           control={control}
@@ -118,6 +118,7 @@ export default function SignUpForm() {
               <Checkbox
                 onChange={onChange}
                 isSelected={value}
+                disabled={isLoading}
               >
                 <span className="text-small">
                   I Agree with privacy and policy

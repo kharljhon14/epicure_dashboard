@@ -22,18 +22,30 @@ export async function POST(req: Request) {
     const user = await User.findById(id);
 
     if (!user)
-      return Response.json({ error: 'Could not find user' }, { status: 404 });
+      return Response.json(
+        {
+          error: 'Invalid user!',
+          errorMessage: 'The specified user could not be found.',
+        },
+        { status: 404 }
+      );
 
     if (user.verified)
       return Response.json(
-        { error: 'Account already verified' },
+        {
+          error: 'Account already verified!',
+          errorMessage: 'This account has already been verified.',
+        },
         { status: 422 }
       );
 
     await User.findOneAndUpdate(id, { verified: true });
   } catch (err) {
     if (err instanceof JsonWebTokenError)
-      return Response.json({ error: err.message });
+      return Response.json(
+        { error: 'Invalid token!', errorMessage: err.message },
+        { status: 422 }
+      );
   }
 
   return Response.json({ message: 'Account activated!' });
