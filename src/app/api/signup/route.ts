@@ -1,11 +1,12 @@
-import EmailVerificationToken from '@/models/emailVerificationToken';
 import User from '@/models/user';
 import type { CreateUserSchemaType } from '@/schemas/user';
 import { CreateUserSchema } from '@/schemas/user';
 import connectDB from '@/utils/connectDB';
+import { NEXT_BASE_URL } from '@/utils/enviromentVariables';
 import { generateToken } from '@/utils/helper';
 import { sendVericifationTokenEmail } from '@/utils/mail';
 import { schemaValidator } from '@/utils/schemaValidator';
+import { createActivationToken } from '@/utils/token';
 
 export async function POST(req: Request) {
   await connectDB();
@@ -32,17 +33,23 @@ export async function POST(req: Request) {
   await newUser.save();
 
   const token = generateToken();
+
+  const activationToken = createActivationToken({
+    token,
+    id: newUser._id.toString(),
+  });
+
+  const url = `${NEXT_BASE_URL}/activate/${activationToken}`;
+
   sendVericifationTokenEmail(
     {
       name: newUser.name,
       email: newUser.email,
     },
-    token
+    url
   );
 
-  await EmailVerificationToken.create({ owner: newUser._id, token });
-
   return Response.json({
-    message: 'Please check your email for your OTP',
+    message: 'Please check your email to activate you account!',
   });
 }

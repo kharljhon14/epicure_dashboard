@@ -27,7 +27,7 @@ interface Profile {
 
 export async function sendVericifationTokenEmail(
   profile: Profile,
-  token: string
+  url: string
 ) {
   const transport = generateEmailTransporter();
 
@@ -41,8 +41,8 @@ export async function sendVericifationTokenEmail(
       title: 'Welcome to Epicure!',
       message: welcomeMessage,
       logo: 'cid:logo',
-      link: '',
-      btnTitle: token,
+      link: url,
+      btnTitle: 'Activate',
     }),
     attachments: [
       {

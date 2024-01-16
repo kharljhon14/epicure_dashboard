@@ -1,11 +1,11 @@
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import Image from 'next/image';
 
-import VerifyTokenForm from '@/features/auth/signup/VerifyToken';
+import SignUpForm from '@/features/auth/signup/SignUpForm';
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
+    <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500">
       <Card className="w-full max-w-lg p-4">
         <CardHeader className="flex items-center justify-center">
           <div className="flex flex-col items-center gap-y-4">
@@ -28,8 +28,7 @@ export default function Home() {
           </div>
         </CardHeader>
         <CardBody>
-          {/* <SignUpForm /> */}
-          <VerifyTokenForm />
+          <SignUpForm />
         </CardBody>
       </Card>
     </div>

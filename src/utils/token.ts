@@ -7,5 +7,5 @@ type Payload = {
 };
 
 export function createActivationToken(payload: Payload) {
-  return jwt.sign(payload, ACTIVATE_TOKEN_SECRET, { expiresIn: '10m' });
+  return jwt.sign(payload, ACTIVATE_TOKEN_SECRET, { expiresIn: '1d' });
 }
