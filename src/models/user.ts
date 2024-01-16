@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import type { Model, ObjectId } from 'mongoose';
 import { model, models, Schema } from 'mongoose';
 
@@ -13,7 +13,11 @@ interface UserDocument {
   tokens: Array<string>;
 }
 
-const userSchema = new Schema<UserDocument>({
+interface Methods {
+  comparePassword(password: string): Promise<boolean>;
+}
+
+const userSchema = new Schema<UserDocument, {}, Methods>({
   name: {
     type: String,
     required: true,
@@ -48,5 +52,9 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.methods.comparePassword = async function (password) {
+  return compare(password, this.password);
+};
+
 const User = models.User || model('User', userSchema);
-export default User as Model<UserDocument>;
+export default User as Model<UserDocument, {}, Methods>;

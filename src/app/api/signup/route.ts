@@ -50,6 +50,6 @@ export async function POST(req: Request) {
   );
 
   return Response.json({
-    message: 'Please check your email to activate you account!',
+    status: 'Success',
   });
 }
