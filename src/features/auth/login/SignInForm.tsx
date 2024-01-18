@@ -9,12 +9,14 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
+import InlineAlert from '@/components/InlineAlert';
 import type { SignInUserScehmaType } from '@/schemas/user';
 import { SignInUSerSchema } from '@/schemas/user';
 
 export default function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
 
@@ -28,6 +30,7 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<SignInUserScehmaType> = async (data) => {
     setLoading(true);
+    setErrorMessage('');
     const res = await fetch('/api/signin', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -38,7 +41,7 @@ export default function LoginForm() {
     } else {
       const error = await res.json();
 
-      alert(error.error);
+      setErrorMessage(error.error);
     }
     setLoading(false);
   };
@@ -49,6 +52,16 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {errorMessage && (
+        <InlineAlert
+          variant="negative"
+          title="Something went wrong!"
+          className="mb-6"
+        >
+          <p>{errorMessage}</p>
+        </InlineAlert>
+      )}
+
       <div className="space-y-4">
         <Input
           {...register('email')}
