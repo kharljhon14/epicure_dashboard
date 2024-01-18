@@ -7,6 +7,18 @@ import { authenticated } from '@/utils/auth';
 import connectDB from '@/utils/connectDB';
 import { schemaValidator } from '@/utils/schemaValidator';
 
+export async function GET() {
+  try {
+    await connectDB();
+
+    const recipes = await Recipe.find();
+
+    return Response.json({ status: 'Success', recipes });
+  } catch (err) {
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     await connectDB();
@@ -39,7 +51,7 @@ export async function POST(req: Request) {
       ...body,
     });
 
-    // await recipe.save();
+    await recipe.save();
 
     return Response.json({ status: 'Success', recipe });
   } catch (err) {
