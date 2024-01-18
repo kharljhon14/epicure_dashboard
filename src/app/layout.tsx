@@ -1,11 +1,14 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Mulish } from 'next/font/google';
 
 import NextUIWrapper from '@/wrapper/NextUIWrapper';
 
-const inter = Inter({ subsets: ['latin'] });
+const font = Mulish({
+  subsets: ['latin'],
+  weight: '400',
+});
 
 export const metadata: Metadata = {
   title: 'Epicure',
@@ -19,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={font.className}>
         <NextUIWrapper>{children}</NextUIWrapper>
       </body>
     </html>

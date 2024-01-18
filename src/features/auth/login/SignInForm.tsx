@@ -39,9 +39,9 @@ export default function LoginForm() {
     if (res.ok) {
       router.push('/recipes');
     } else {
-      const error = await res.json();
+      const { error } = await res.json();
 
-      setErrorMessage(error.error);
+      setErrorMessage(error);
     }
     setLoading(false);
   };

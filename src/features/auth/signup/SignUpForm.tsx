@@ -8,12 +8,14 @@ import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
+import InlineAlert from '@/components/InlineAlert';
 import { CreateUserSchema, type CreateUserSchemaType } from '@/schemas/user';
 
 export default function SignUpForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
 
@@ -28,6 +30,7 @@ export default function SignUpForm() {
 
   const onSubmit: SubmitHandler<CreateUserSchemaType> = async (data) => {
     setIsLoading(true);
+    setErrorMessage('');
     const res = await fetch('/api/signup', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -38,8 +41,7 @@ export default function SignUpForm() {
     } else {
       const { error } = await res.json();
 
-      // TODO: Make this an inline alert
-      alert(error);
+      setErrorMessage(error);
     }
     setIsLoading(false);
   };
@@ -57,6 +59,16 @@ export default function SignUpForm() {
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="off"
     >
+      {errorMessage && (
+        <InlineAlert
+          variant="negative"
+          title="Something went wrong!"
+          className="mb-6"
+        >
+          <p>{errorMessage}</p>
+        </InlineAlert>
+      )}
+
       <div className="space-y-4">
         <Input
           {...register('name')}
