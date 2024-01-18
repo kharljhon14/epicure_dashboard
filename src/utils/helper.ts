@@ -1,4 +1,7 @@
 /* eslint-disable no-plusplus */
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 export function generateToken(length: number = 6) {
   let otp = '';
 
@@ -9,4 +12,8 @@ export function generateToken(length: number = 6) {
   }
 
   return otp;
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }
