@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@nextui-org/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -13,6 +14,9 @@ import { SignInUSerSchema } from '@/schemas/user';
 
 export default function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -23,20 +27,20 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<SignInUserScehmaType> = async (data) => {
+    setLoading(true);
     const res = await fetch('/api/signin', {
       method: 'POST',
       body: JSON.stringify(data),
     });
 
     if (res.ok) {
-      const body = await res.json();
-
-      console.log(body);
+      router.push('/recipes');
     } else {
       const error = await res.json();
 
       alert(error.error);
     }
+    setLoading(false);
   };
 
   const togglePasswordVisibility = () => {
@@ -51,6 +55,7 @@ export default function LoginForm() {
           label="Email*"
           isInvalid={!!errors.email?.message}
           errorMessage={errors.email?.message && errors.email.message}
+          disabled={loading}
         />
         <Input
           {...register('password')}
@@ -67,6 +72,7 @@ export default function LoginForm() {
           }
           isInvalid={!!errors.password?.message}
           errorMessage={errors.password?.message && errors.password.message}
+          disabled={loading}
         />
 
         <div className="flex justify-between text-sm">
@@ -88,6 +94,8 @@ export default function LoginForm() {
         color="primary"
         className="mt-6 w-full"
         type="submit"
+        disabled={loading}
+        isLoading={loading}
       >
         Sign In
       </Button>
