@@ -8,12 +8,11 @@ export const RecipeSchema = z.object({
   instruction: z
     .string({ required_error: 'Instruction is required!' })
     .min(1, 'Instruction is required!')
-    .max(1000, 'Name should be less than 1000 characters'),
+    .max(9999, 'Name should be less than 10000 characters'),
   ingredients: z
     .string({ required_error: 'Ingredients is required!' })
-    .array()
-    .min(1, { message: 'Ingredients is required!' })
-    .max(20, { message: 'Ingredients should be less than 20' }),
+    .min(1, 'Ingredients is required!')
+    .max(9999, 'Name should be less than 10000 characters'),
 });
 
 export type RecipeSchemaType = z.infer<typeof RecipeSchema>;

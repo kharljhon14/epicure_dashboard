@@ -6,7 +6,7 @@ import type { RecipeSchemaType } from '@/schemas/recipe';
 interface RecipeDocument {
   owner: ObjectId;
   name: string;
-  ingredients: Array<string>;
+  ingredients: string;
   instruction: string;
   image?: { url: string; publicId: string };
 }
@@ -22,7 +22,7 @@ const recipeSchema = new Schema<RecipeDocument>(
       required: true,
     },
     ingredients: {
-      type: [String],
+      type: String,
       required: true,
     },
     instruction: {

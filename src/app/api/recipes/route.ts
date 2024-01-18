@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 import Recipe from '@/models/recipe';
 import type { RecipeSchemaType } from '@/schemas/recipe';
 import { RecipeSchema } from '@/schemas/recipe';
@@ -14,20 +16,22 @@ export async function POST(req: Request) {
 
     if (error) return Response.json({ error }, { status: 422 });
 
-    const token = req.headers.get('authorization');
+    const cookieStore = cookies();
 
-    if (!token)
+    const token = cookieStore.get('session');
+
+    if (!token?.value)
       return Response.json(
         { error: 'Must be authenticated!' },
-        { status: 403 }
+        { status: 401 }
       );
 
-    const userId = await authenticated(token);
+    const userId = await authenticated(token.value);
 
     if (!userId)
       return Response.json(
         { error: 'Must be authenticated!' },
-        { status: 403 }
+        { status: 401 }
       );
 
     const recipe = new Recipe({
@@ -35,13 +39,10 @@ export async function POST(req: Request) {
       ...body,
     });
 
-    await recipe.save();
+    // await recipe.save();
 
     return Response.json({ status: 'Success', recipe });
   } catch (err) {
-    return Response.json(
-      { error: 'Internal server error', err },
-      { status: 500 }
-    );
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
