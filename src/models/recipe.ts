@@ -1,8 +1,8 @@
 import type { Model, ObjectId } from 'mongoose';
 import { model, models, Schema } from 'mongoose';
 
-interface RecipeDocument {
-  owner: ObjectId;
+export interface RecipeDocument {
+  owner: { id: ObjectId; name: string };
   name: string;
   ingredients: string;
   instruction: string;
@@ -12,8 +12,13 @@ interface RecipeDocument {
 const recipeSchema = new Schema<RecipeDocument>(
   {
     owner: {
-      type: Schema.ObjectId,
-      ref: 'User',
+      type: Object,
+      id: {
+        type: Schema.ObjectId,
+        ref: 'User',
+      },
+      name: String,
+      required: true,
     },
     name: {
       type: String,

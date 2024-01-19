@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 
 import Recipe from '@/models/recipe';
+import type { UserDocument } from '@/models/user';
 import type { RecipeSchemaType } from '@/schemas/recipe';
 import { RecipeSchema } from '@/schemas/recipe';
 import { authenticated } from '@/utils/auth';
@@ -38,16 +39,16 @@ export async function POST(req: Request) {
         { status: 401 }
       );
 
-    const userId = await authenticated(token.value);
+    const user: UserDocument | null = await authenticated(token.value);
 
-    if (!userId)
+    if (!user)
       return Response.json(
         { error: 'Must be authenticated!' },
         { status: 401 }
       );
 
     const recipe = new Recipe({
-      owner: userId,
+      owner: { id: user._id, name: user.name },
       ...body,
     });
 

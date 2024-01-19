@@ -3,7 +3,7 @@ import { compare, hash } from 'bcrypt';
 import type { Model, ObjectId } from 'mongoose';
 import { model, models, Schema } from 'mongoose';
 
-interface UserDocument {
+export interface UserDocument {
   _id: ObjectId;
   name: string;
   email: string;
