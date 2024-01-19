@@ -1,8 +1,6 @@
 import type { Model, ObjectId } from 'mongoose';
 import { model, models, Schema } from 'mongoose';
 
-import type { RecipeSchemaType } from '@/schemas/recipe';
-
 interface RecipeDocument {
   owner: ObjectId;
   name: string;
@@ -40,4 +38,4 @@ const recipeSchema = new Schema<RecipeDocument>(
 
 const Recipe = models.Recipe || model('Recipe', recipeSchema);
 
-export default Recipe as Model<RecipeSchemaType>;
+export default Recipe as Model<RecipeDocument>;

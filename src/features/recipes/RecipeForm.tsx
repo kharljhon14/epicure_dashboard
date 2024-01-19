@@ -23,23 +23,17 @@ export default function RecipeForm() {
   });
 
   const onSubmit: SubmitHandler<RecipeSchemaType> = async (data) => {
-    // const res = await fetch('/api/recipes', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    // });
-
-    // if (res.ok) {
-    //   alert('nice!');
-    // } else {
-    //   const { error } = await res.json();
-
-    //   console.error(error);
-    // }
-
-    console.log(data);
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      alert('nice!');
+    } else {
+      const { error } = await res.json();
+      console.error(error);
+    }
   };
-
-  console.log(errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
