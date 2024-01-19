@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+interface FileWithFilepath extends File {
+  filepath?: string;
+}
+
 const MAX_FILE_SIZE = 3000000;
 function checkFileType(file: File) {
   // file type checking
@@ -26,7 +30,7 @@ export const RecipeSchema = z.object({
     .min(1, 'Ingredients is required!')
     .max(9999, 'Name should be less than 10000 characters'),
   image: z
-    .custom<File>()
+    .custom<FileWithFilepath>()
     .refine((file) => file && file.size < MAX_FILE_SIZE, 'Max size is 3MB') // file size validation
     .refine(
       (file) => checkFileType(file),
