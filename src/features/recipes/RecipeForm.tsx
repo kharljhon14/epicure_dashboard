@@ -23,9 +23,18 @@ export default function RecipeForm() {
   });
 
   const onSubmit: SubmitHandler<RecipeSchemaType> = async (data) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('instruction', data.instruction);
+    formData.append('ingredients', data.ingredients);
+
+    if (data.image) {
+      formData.append('image', data.image);
+    }
+
     const res = await fetch('/api/recipes', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: formData,
     });
     if (res.ok) {
       alert('nice!');
