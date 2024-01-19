@@ -17,6 +17,7 @@ export default function RecipeForm() {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<RecipeSchemaType>({
     resolver: zodResolver(RecipeSchema),
@@ -38,6 +39,8 @@ export default function RecipeForm() {
     });
     if (res.ok) {
       alert('nice!');
+      setPreview(null);
+      reset();
     } else {
       const { error } = await res.json();
       console.error(error);
