@@ -8,15 +8,11 @@ import connectDB from '@/utils/connectDB';
 import { schemaValidator } from '@/utils/schemaValidator';
 
 export async function GET() {
-  try {
-    await connectDB();
+  await connectDB();
 
-    const recipes = await Recipe.find();
+  const recipes = await Recipe.find();
 
-    return Response.json({ status: 'Success', recipes });
-  } catch (err) {
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
-  }
+  return Response.json({ status: 'Success', recipes });
 }
 
 export async function POST(req: Request) {
