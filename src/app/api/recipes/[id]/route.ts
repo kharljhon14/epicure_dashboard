@@ -1,9 +1,11 @@
 import { isValidObjectId } from 'mongoose';
 import { cookies } from 'next/headers';
 
+import cloudinary from '@/cloudinary';
 import Recipe from '@/models/recipe';
 import { RecipeSchema, type RecipeSchemaType } from '@/schemas/recipe';
 import { authenticated } from '@/utils/auth';
+import { uploadImageToCloudinary } from '@/utils/cloudinary';
 import connectDB from '@/utils/connectDB';
 import { schemaValidator } from '@/utils/schemaValidator';
 
@@ -31,7 +33,10 @@ export async function PATCH(req: Request, { params }: Params) {
   try {
     await connectDB();
 
-    const body: RecipeSchemaType = await req.json();
+    const data = await req.formData();
+
+    const body = Object.fromEntries(data) as RecipeSchemaType;
+
     const error = schemaValidator(RecipeSchema, body);
 
     if (error) return Response.json({ error }, { status: 422 });
@@ -57,9 +62,17 @@ export async function PATCH(req: Request, { params }: Params) {
         { status: 401 }
       );
 
-    const recipe = await Recipe.findOneAndUpdate({ _id: params.id }, body, {
-      new: true,
-    });
+    const recipe = await Recipe.findOneAndUpdate(
+      { _id: params.id },
+      {
+        name: body.name,
+        instruction: body.instruction,
+        ingredients: body.ingredients,
+      },
+      {
+        new: true,
+      }
+    );
 
     if (!recipe)
       return Response.json(
@@ -67,8 +80,29 @@ export async function PATCH(req: Request, { params }: Params) {
         { status: 404 }
       );
 
+    if (body.image) {
+      if (recipe.image?.publicId) {
+        await cloudinary.uploader.destroy(recipe.image.publicId);
+      }
+      const arrayBuffer = await body.image.arrayBuffer();
+      const buffer = new Uint8Array(arrayBuffer);
+
+      const result = await uploadImageToCloudinary(buffer);
+
+      if (result) {
+        recipe.image = {
+          url: result.secure_url,
+          publicId: result.public_id,
+        };
+      }
+      await recipe.save();
+    }
+
     return Response.json({ status: 'Success', recipe });
   } catch (err) {
+    if (err instanceof Error)
+      return Response.json({ error: err.message }, { status: 500 });
+
     return Response.json({ error: 'Internal server error!' }, { status: 500 });
   }
 }

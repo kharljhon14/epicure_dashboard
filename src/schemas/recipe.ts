@@ -7,7 +7,7 @@ function checkFileType(file: File) {
     const fileType = file.name.split('.').pop();
     if (!fileType) return false;
 
-    if (['png', 'jpg'].includes(fileType)) return true;
+    if (['png', 'jpg', 'JPG', 'PNG'].includes(fileType)) return true;
   }
   return false;
 }
@@ -27,10 +27,10 @@ export const RecipeSchema = z.object({
     .max(9999, 'Name should be less than 10000 characters'),
   image: z
     .custom<File>()
-    .refine((file) => file && file.size < MAX_FILE_SIZE, 'Max size is 3MB.') // file size validation
+    .refine((file) => file && file.size < MAX_FILE_SIZE, 'Max size is 3MB') // file size validation
     .refine(
       (file) => checkFileType(file),
-      'Only .jpg, .gif, .png formats are supported.'
+      'Only .jpg, .png formats are supported'
     )
     .optional(),
 });
