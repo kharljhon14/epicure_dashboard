@@ -2,11 +2,13 @@ import type { Model, ObjectId } from 'mongoose';
 import { model, models, Schema } from 'mongoose';
 
 export interface RecipeDocument {
+  _id: ObjectId;
   owner: { id: ObjectId; name: string };
   name: string;
   ingredients: string;
   instruction: string;
   image?: { url: string; publicId: string };
+  createdAt: Date;
 }
 
 const recipeSchema = new Schema<RecipeDocument>(
