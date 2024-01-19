@@ -1,11 +1,8 @@
 'use client';
 
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
-import { SWRConfig } from 'swr';
 
-import Recipe from '@/features/recipes/Recipe';
 import RecipeForm from '@/features/recipes/RecipeForm';
-import fetcher from '@/utils/fetcher';
 
 export default function RecipePage() {
   return (
@@ -19,10 +16,10 @@ export default function RecipePage() {
           </div>
         </CardHeader>
         <CardBody>
-          {/* <RecipeForm /> */}
-          <SWRConfig value={{ fetcher }}>
+          <RecipeForm />
+          {/* <SWRConfig value={{ fetcher }}>
             <Recipe />
-          </SWRConfig>
+          </SWRConfig> */}
         </CardBody>
       </Card>
     </div>
