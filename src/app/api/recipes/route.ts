@@ -7,6 +7,7 @@ import { RecipeSchema } from '@/schemas/recipe';
 import { authenticated } from '@/utils/auth';
 import { uploadImageToCloudinary } from '@/utils/cloudinary';
 import connectDB from '@/utils/connectDB';
+import { PAGINATION_LIMIT } from '@/utils/contansts';
 import { schemaValidator } from '@/utils/schemaValidator';
 
 export async function GET(req: Request) {
@@ -16,15 +17,14 @@ export async function GET(req: Request) {
 
   const search = searchParams.get('q');
   const pageNumber = searchParams.get('pageNumber');
-  const limit = 8;
 
   const page = parseInt(pageNumber ?? '1', 10) - 1;
   const total = await Recipe.countDocuments();
   const recipes = await Recipe.find({
     name: { $regex: search ?? '', $options: 'i' },
   })
-    .skip(page * limit)
-    .limit(limit)
+    .skip(page * PAGINATION_LIMIT)
+    .limit(PAGINATION_LIMIT)
     .sort('-createdAt');
 
   return Response.json({
