@@ -62,7 +62,9 @@ export default function RecipeCards({ setTotal }: Props) {
   return (
     <div className="space-y-6">
       <RecipeSearch />
-      {/* <RecipeForm /> */}
+      <h1 className="mx-6 mb-4 text-3xl font-bold text-gray-800 lg:mx-2">
+        Recipes
+      </h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {data?.recipes?.map((recipe) => (
           <div
