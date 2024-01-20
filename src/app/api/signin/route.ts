@@ -30,7 +30,9 @@ export async function POST(req: Request) {
 
   const cookieStore = cookies();
 
-  cookieStore.set('session', sessionToken);
+  const oneDay = 60 * 60 * 24;
+
+  cookieStore.set('session', sessionToken, { maxAge: oneDay });
 
   return Response.json({ stutus: 'Success' });
 }
