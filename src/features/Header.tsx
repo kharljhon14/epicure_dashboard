@@ -1,5 +1,4 @@
 import {
-  Button,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -7,8 +6,11 @@ import {
 } from '@nextui-org/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { PropsWithChildren } from 'react';
 
-export default function Header() {
+interface Props extends PropsWithChildren {}
+
+export default function Header({ children }: Props) {
   return (
     <Navbar
       isBordered
@@ -38,9 +40,7 @@ export default function Header() {
       </NavbarBrand>
 
       <NavbarContent justify="end">
-        <NavbarItem>
-          <Button color="primary">Login</Button>
-        </NavbarItem>
+        <NavbarItem>{children}</NavbarItem>
       </NavbarContent>
     </Navbar>
   );

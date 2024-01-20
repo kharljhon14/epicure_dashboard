@@ -1,7 +1,7 @@
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import Image from 'next/image';
 
-import LoginForm from '@/features/auth/login/SignInForm';
+import SignInForm from '@/features/auth/signin/SignInForm';
 
 export default function SignInPage() {
   return (
@@ -28,7 +28,7 @@ export default function SignInPage() {
           </div>
         </CardHeader>
         <CardBody>
-          <LoginForm />
+          <SignInForm />
         </CardBody>
       </Card>
     </div>

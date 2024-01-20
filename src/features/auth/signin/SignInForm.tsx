@@ -13,7 +13,7 @@ import InlineAlert from '@/components/InlineAlert';
 import type { SignInUserScehmaType } from '@/schemas/user';
 import { SignInUSerSchema } from '@/schemas/user';
 
-export default function LoginForm() {
+export default function SignInForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -51,7 +51,10 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      autoComplete="off"
+    >
       {errorMessage && (
         <InlineAlert
           variant="negative"
@@ -110,7 +113,7 @@ export default function LoginForm() {
         disabled={loading}
         isLoading={loading}
       >
-        Sign In
+        Submit
       </Button>
     </form>
   );
