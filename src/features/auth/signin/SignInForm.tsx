@@ -13,7 +13,11 @@ import InlineAlert from '@/components/InlineAlert';
 import type { SignInUserScehmaType } from '@/schemas/user';
 import { SignInUSerSchema } from '@/schemas/user';
 
-export default function SignInForm() {
+interface Props {
+  handlIsSignUp(value: boolean): void;
+}
+
+export default function SignInForm({ handlIsSignUp }: Props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -98,12 +102,13 @@ export default function SignInForm() {
           >
             Forgot Password
           </Link>
-          <Link
-            href="/"
+          <button
+            onClick={() => handlIsSignUp(true)}
+            type="button"
             className="text-blue-500 hover:underline"
           >
             Create Account
-          </Link>
+          </button>
         </div>
       </div>
       <Button

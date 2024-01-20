@@ -11,7 +11,11 @@ import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import InlineAlert from '@/components/InlineAlert';
 import { CreateUserSchema, type CreateUserSchemaType } from '@/schemas/user';
 
-export default function SignUpForm() {
+interface Props {
+  handlIsSignUp(value: boolean): void;
+}
+
+export default function SignUpForm({ handlIsSignUp }: Props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -143,16 +147,29 @@ export default function SignUpForm() {
           )}
         />
       </div>
-      <Button
-        color="primary"
-        className="mt-6 w-full"
-        size="lg"
-        isLoading={isLoading}
-        disabled={isLoading}
-        type="submit"
-      >
-        Sign Up
-      </Button>
+      <div className="flex w-full flex-col items-center space-y-4">
+        <Button
+          color="primary"
+          className="mt-6 w-full"
+          size="lg"
+          isLoading={isLoading}
+          disabled={isLoading}
+          type="submit"
+        >
+          Sign Up
+        </Button>
+
+        <p className="text-center text-sm text-gray-600">
+          Already part of the Epicure family?
+          <button
+            onClick={() => handlIsSignUp(false)}
+            type="button"
+            className="ml-1 text-blue-500 hover:underline"
+          >
+            Sign in here
+          </button>
+        </p>
+      </div>
     </form>
   );
 }
