@@ -4,6 +4,7 @@ import { Button, NextUIProvider, useDisclosure } from '@nextui-org/react';
 import type { PropsWithChildren } from 'react';
 
 import AuthModal from '@/features/auth/AuthModal';
+import Footer from '@/features/Footer';
 import Header from '@/features/Header';
 
 interface Props extends PropsWithChildren {}
@@ -20,11 +21,14 @@ export default function NextUIWrapper({ children }: Props) {
           Sign In
         </Button>
       </Header>
-      <div className=" my-24 md:mx-24 lg:mx-32">{children}</div>
+      <div className=" mb-20 mt-16 min-h-screen md:mx-24 lg:mx-32">
+        {children}
+      </div>
       <AuthModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       />
+      <Footer />
     </NextUIProvider>
   );
 }

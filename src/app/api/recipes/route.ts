@@ -9,10 +9,16 @@ import { uploadImageToCloudinary } from '@/utils/cloudinary';
 import connectDB from '@/utils/connectDB';
 import { schemaValidator } from '@/utils/schemaValidator';
 
-export async function GET() {
+export async function GET(req: Request) {
   await connectDB();
 
-  const recipes = await Recipe.find().sort('-createdAt');
+  const { searchParams } = new URL(req.url);
+
+  const search = searchParams.get('q');
+
+  const recipes = await Recipe.find({
+    name: { $regex: search ?? '', $options: 'i' },
+  }).sort('-createdAt');
 
   return Response.json({ status: 'Success', recipes });
 }

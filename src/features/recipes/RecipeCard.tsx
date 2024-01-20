@@ -17,6 +17,9 @@ export default function RecipeCard({ recipe }: Props) {
             <Image
               fill
               src={recipe.image?.url}
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="/1x1.png"
               alt={recipe.name}
               sizes="(max-width):760px 100vw 700px"
               style={{
