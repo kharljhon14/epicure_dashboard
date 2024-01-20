@@ -13,10 +13,7 @@ export async function GET() {
     const token = cookiesStore.get('session');
 
     if (!token?.value)
-      return Response.json(
-        { error: 'Must be authenticated!' },
-        { status: 401 }
-      );
+      return Response.json({ status: 'No User' }, { status: 200 });
 
     const userId = await authenticated(token.value);
 

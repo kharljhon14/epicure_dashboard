@@ -3,11 +3,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@nextui-org/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { useSWRConfig } from 'swr';
 
 import InlineAlert from '@/components/InlineAlert';
 import type { SignInUserScehmaType } from '@/schemas/user';
@@ -15,14 +15,15 @@ import { SignInUSerSchema } from '@/schemas/user';
 
 interface Props {
   handlIsSignUp(value: boolean): void;
+  onClose(): void;
 }
 
-export default function SignInForm({ handlIsSignUp }: Props) {
+export default function SignInForm({ handlIsSignUp, onClose }: Props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const {
     register,
@@ -41,7 +42,8 @@ export default function SignInForm({ handlIsSignUp }: Props) {
     });
 
     if (res.ok) {
-      router.push('/recipes');
+      mutate('/api/user');
+      onClose();
     } else {
       const { error } = await res.json();
 

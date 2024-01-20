@@ -13,6 +13,7 @@ import { CreateUserSchema, type CreateUserSchemaType } from '@/schemas/user';
 
 interface Props {
   handlIsSignUp(value: boolean): void;
+  onClose(): void;
 }
 
 export default function SignUpForm({ handlIsSignUp }: Props) {

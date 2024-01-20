@@ -10,9 +10,10 @@ import SignUpForm from './signup/SignUpForm';
 interface Props {
   isOpen: boolean;
   onOpenChange(): void;
+  onClose(): void;
 }
 
-export default function AuthModal({ isOpen, onOpenChange }: Props) {
+export default function AuthModal({ isOpen, onOpenChange, onClose }: Props) {
   const [isSignUp, setIsSignUp] = useState(false);
 
   const handleIsSignUp = (value: boolean) => {
@@ -47,9 +48,15 @@ export default function AuthModal({ isOpen, onOpenChange }: Props) {
         </ModalHeader>
         <ModalBody>
           {isSignUp ? (
-            <SignUpForm handlIsSignUp={handleIsSignUp} />
+            <SignUpForm
+              handlIsSignUp={handleIsSignUp}
+              onClose={onClose}
+            />
           ) : (
-            <SignInForm handlIsSignUp={handleIsSignUp} />
+            <SignInForm
+              handlIsSignUp={handleIsSignUp}
+              onClose={onClose}
+            />
           )}
         </ModalBody>
       </ModalContent>

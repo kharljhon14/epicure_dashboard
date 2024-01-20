@@ -33,7 +33,7 @@ export default function RecipeSearch() {
       className="mx-6 md:mx-2"
       autoComplete="off"
     >
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2">
         <Input
           placeholder="Search"
           className="lg:w-1/5"
@@ -48,6 +48,7 @@ export default function RecipeSearch() {
           size="lg"
           color="primary"
           type="submit"
+          isIconOnly
         >
           <IoIosSearch size={24} />
         </Button>
