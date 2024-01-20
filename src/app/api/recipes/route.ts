@@ -15,12 +15,23 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
   const search = searchParams.get('q');
+  const pageNumber = searchParams.get('pageNumber');
+  const limit = 8;
 
+  const page = parseInt(pageNumber ?? '1', 10) - 1;
+  const total = await Recipe.countDocuments();
   const recipes = await Recipe.find({
     name: { $regex: search ?? '', $options: 'i' },
-  }).sort('-createdAt');
+  })
+    .skip(page * limit)
+    .limit(limit)
+    .sort('-createdAt');
 
-  return Response.json({ status: 'Success', recipes });
+  return Response.json({
+    status: 'Success',
+    recipes,
+    total: search !== '' ? recipes.length : total,
+  });
 }
 
 export async function POST(req: Request) {

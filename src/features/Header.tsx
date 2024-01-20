@@ -14,8 +14,7 @@ export default function Header({ children }: Props) {
   return (
     <Navbar
       isBordered
-      className=" py-2 shadow-sm"
-      shouldHideOnScroll
+      className="shadow-sm"
     >
       <NavbarBrand>
         <Link

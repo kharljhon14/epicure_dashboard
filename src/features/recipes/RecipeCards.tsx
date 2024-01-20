@@ -1,5 +1,5 @@
-import { Pagination } from '@nextui-org/react';
 import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import type { GetRecipesResponse } from '@/@types/recipe';
@@ -8,13 +8,25 @@ import RecipeCard from './RecipeCard';
 import RecipeCardSkeleton from './RecipeCardSkeleton';
 import RecipeSearch from './RecipeSearch';
 
-export default function RecipeCards() {
+interface Props {
+  setTotal(value: number): void;
+}
+
+export default function RecipeCards({ setTotal }: Props) {
   const searchParams = useSearchParams();
+
   const q = searchParams.get('q');
+  const pageNumber = searchParams.get('pageNumber');
 
   const { data, isLoading, error } = useSWR<GetRecipesResponse>(
-    `/api/recipes?q=${q ?? ''}`
+    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}`
   );
+
+  useEffect(() => {
+    if (data) {
+      setTotal(data.total);
+    }
+  }, [data]);
 
   if (error) return <div>Failed to load</div>;
   if (isLoading)
@@ -61,10 +73,6 @@ export default function RecipeCards() {
           </div>
         ))}
       </div>
-      <Pagination
-        total={data?.recipes.length ?? 0}
-        initialPage={1}
-      />
     </div>
   );
 }
