@@ -3,7 +3,7 @@ import { IoAdd } from 'react-icons/io5';
 
 import RecipeModal from './RecipeModal';
 
-export default function RecipeFormConatainer() {
+export default function RecipeFormContainer() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -12,8 +12,10 @@ export default function RecipeFormConatainer() {
         color="primary"
         onClick={onOpen}
         size="md"
+        className="flex items-center"
       >
-        <IoAdd size={16} /> Recipe
+        <IoAdd size={18} />
+        <span>Recipe</span>
       </Button>
       <RecipeModal
         isOpen={isOpen}

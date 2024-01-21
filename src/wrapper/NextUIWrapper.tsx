@@ -9,6 +9,7 @@ import {
   NextUIProvider,
   useDisclosure,
 } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 import { type PropsWithChildren } from 'react';
 import useSWR from 'swr';
 
@@ -22,6 +23,7 @@ interface Props extends PropsWithChildren {}
 
 export default function NextUIWrapper({ children }: Props) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const router = useRouter();
 
   const { data, mutate } = useSWR<GetUserResponse>('/api/user', fetcher);
 
@@ -39,26 +41,29 @@ export default function NextUIWrapper({ children }: Props) {
               <Button
                 variant="bordered"
                 color="primary"
+                size="sm"
               >
-                {data.user.name}
+                👋 Hello, {data.user.name}!
               </Button>
             </DropdownTrigger>
             <DropdownMenu
-              aria-label="Static Actions"
+              aria-label="User Actions"
               onAction={(key) => {
                 if (key === 'signout') {
                   signOut();
                 }
+                if (key === 'recipes') {
+                  router.push('/user');
+                }
               }}
             >
-              <DropdownItem key="profile">Profile</DropdownItem>
-              <DropdownItem key="recipes">My Recipes</DropdownItem>
+              <DropdownItem key="recipes">📖 My Recipes</DropdownItem>
               <DropdownItem
                 key="signout"
                 className="text-danger"
                 color="danger"
               >
-                Sign Out
+                🚪 Sign Out
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -67,11 +72,11 @@ export default function NextUIWrapper({ children }: Props) {
             color="primary"
             onClick={onOpen}
           >
-            Sign In
+            🚀 Sign In
           </Button>
         )}
       </Header>
-      <div className=" mb-20 mt-16 min-h-screen md:mx-24 lg:mx-32">
+      <div className="mb-20 mt-16 min-h-screen md:mx-24 lg:mx-32">
         {children}
       </div>
       <AuthModal

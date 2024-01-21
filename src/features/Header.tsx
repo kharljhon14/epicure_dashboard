@@ -67,7 +67,7 @@ export default function Header({ children }: Props) {
                 <IoSearchOutline size={16} />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[240px]">
+            <PopoverContent>
               <RecipeSearch />
             </PopoverContent>
           </Popover>

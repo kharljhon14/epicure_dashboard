@@ -37,6 +37,7 @@ export default function RecipeSearch() {
         variant="bordered"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
+        isClearable
         onClear={handleClear}
         classNames={{
           base: 'max-w-full sm:max-w-lg h-10',

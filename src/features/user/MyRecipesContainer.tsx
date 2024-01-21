@@ -6,13 +6,15 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import type { GetRecipesResponse } from '@/@types/recipe';
+import type { GetUserResponse } from '@/@types/user';
 import { PAGINATION_LIMIT } from '@/utils/contansts';
 import fetcher from '@/utils/fetcher';
 
-import RecipeCards from './RecipeCards';
-import RecipeCardSkeleton from './RecipeCardSkeleton';
+import RecipeCards from '../recipes/RecipeCards';
+import RecipeCardSkeleton from '../recipes/RecipeCardSkeleton';
+import RecipeFormContainer from '../recipes/RecipeFormContainer';
 
-export default function RecipesContainer() {
+export default function MyRecipesContainer() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
@@ -21,8 +23,9 @@ export default function RecipesContainer() {
   const q = searchParams.get('q');
   const pageNumber = searchParams.get('pageNumber');
 
+  const { data: userData } = useSWR<GetUserResponse>('/api/user', fetcher);
   const { data, isLoading, error } = useSWR<GetRecipesResponse>(
-    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}`,
+    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user.id}`,
     fetcher
   );
   const [total, setTotal] = useState<number | null>();
@@ -67,12 +70,13 @@ export default function RecipesContainer() {
   return (
     <div>
       {data?.recipes && (
-        <div>
-          <h1 className="mb-8 text-4xl font-extrabold text-gray-800">
-            {q
-              ? `Results for ${q}`
-              : 'Welcome to Your Culinary Playground! 🍽️✨'}
-          </h1>
+        <>
+          <div className="flex flex-col items-center justify-between">
+            <h1 className="mb-6 text-center text-2xl font-extrabold text-gray-600 lg:text-left lg:text-3xl">
+              🌱 Your Delicious Creations, {userData?.user.name}!
+            </h1>
+            <RecipeFormContainer />
+          </div>
 
           <RecipeCards recipes={data?.recipes} />
           {total && total > PAGINATION_LIMIT && (
@@ -87,7 +91,7 @@ export default function RecipesContainer() {
               />
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
