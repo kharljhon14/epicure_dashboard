@@ -11,13 +11,10 @@ export default function RecipeSearch() {
   const searchParams = useSearchParams();
 
   const q = searchParams.get('q');
-  const owner = searchParams.get('owner');
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    router.push(
-      `${pathName}?q=${searchValue}&onwer=${owner ?? ''}&pageNumber=1`
-    );
+    router.push(`${pathName}?q=${searchValue}&pageNumber=1`);
   };
   const handleClear = () => {
     if (q) {
