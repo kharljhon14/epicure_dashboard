@@ -90,9 +90,11 @@ export default function RecipeForm() {
         />
 
         <div className="flex space-x-2">
-          <div className=" relative flex h-48 w-48 shrink-0 items-center justify-center rounded-lg  border-2 border-dashed border-neutral-200 bg-neutral-50 p-4">
+          <div className=" relative flex h-28 w-28 shrink-0 items-center justify-center rounded-lg border-2 border-dashed  border-neutral-200 bg-neutral-50 p-4 md:h-48 md:w-48">
             <div className="flex flex-col items-center space-y-2 font-bold text-neutral-400">
-              <span className="text-center text-sm">Recipe image</span>
+              <span className="text-center text-xs md:text-sm">
+                Recipe image
+              </span>
             </div>
 
             {watch('image') && (
@@ -148,6 +150,7 @@ export default function RecipeForm() {
 
         <Input
           {...register('name')}
+          size="sm"
           label="Name*"
           isInvalid={!!errors.name?.message}
           errorMessage={errors.name?.message && errors.name.message}
@@ -156,23 +159,23 @@ export default function RecipeForm() {
 
         <Textarea
           {...register('ingredients')}
+          size="sm"
           label="Ingredients*"
           isInvalid={!!errors.ingredients?.message}
           errorMessage={
             errors.ingredients?.message && errors.ingredients.message
           }
-          minRows={12}
           disabled={isLoading}
         />
 
         <Textarea
           {...register('instruction')}
+          size="sm"
           label="Instructions*"
           isInvalid={!!errors.instruction?.message}
           errorMessage={
             errors.instruction?.message && errors.instruction.message
           }
-          minRows={12}
           disabled={isLoading}
         />
       </div>
@@ -180,7 +183,6 @@ export default function RecipeForm() {
         type="submit"
         color="primary"
         className="mt-6 w-full"
-        size="lg"
         disabled={isLoading}
         isLoading={isLoading}
       >
