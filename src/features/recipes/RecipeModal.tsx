@@ -1,13 +1,23 @@
 import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
+import type { KeyedMutator } from 'swr';
+
+import type { GetRecipesResponse } from '@/@types/recipe';
 
 import RecipeForm from './RecipeForm';
 
 interface Props {
   isOpen: boolean;
   onOpenChange(isOpen: boolean): void;
+  onClose(): void;
+  mutate: KeyedMutator<GetRecipesResponse>;
 }
 
-export default function RecipeModal({ isOpen, onOpenChange }: Props) {
+export default function RecipeModal({
+  isOpen,
+  onOpenChange,
+  onClose,
+  mutate,
+}: Props) {
   return (
     <Modal
       isOpen={isOpen}
@@ -21,7 +31,10 @@ export default function RecipeModal({ isOpen, onOpenChange }: Props) {
           </span>
         </ModalHeader>
         <ModalBody>
-          <RecipeForm />
+          <RecipeForm
+            onClose={onClose}
+            mutate={mutate}
+          />
         </ModalBody>
       </ModalContent>
     </Modal>

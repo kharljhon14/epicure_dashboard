@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@nextui-org/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -24,6 +25,7 @@ export default function SignInForm({ handlIsSignUp, onClose }: Props) {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { mutate } = useSWRConfig();
+  const router = useRouter();
 
   const {
     register,
@@ -44,6 +46,7 @@ export default function SignInForm({ handlIsSignUp, onClose }: Props) {
     if (res.ok) {
       mutate('/api/user');
       onClose();
+      router.push('/user');
     } else {
       const { error } = await res.json();
 

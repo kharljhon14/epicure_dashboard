@@ -30,6 +30,7 @@ export default function NextUIWrapper({ children }: Props) {
   const signOut = async () => {
     await fetch('/api/signout');
     mutate();
+    router.push('/');
   };
 
   return (

@@ -1,10 +1,17 @@
 import { Button, useDisclosure } from '@nextui-org/react';
 import { IoAdd } from 'react-icons/io5';
+import type { KeyedMutator } from 'swr';
+
+import type { GetRecipesResponse } from '@/@types/recipe';
 
 import RecipeModal from './RecipeModal';
 
-export default function RecipeFormContainer() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+interface Props {
+  mutate: KeyedMutator<GetRecipesResponse>;
+}
+
+export default function RecipeFormContainer({ mutate }: Props) {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   return (
     <>
@@ -20,6 +27,8 @@ export default function RecipeFormContainer() {
       <RecipeModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        onClose={onClose}
+        mutate={mutate}
       />
     </>
   );

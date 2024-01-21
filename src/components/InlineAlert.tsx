@@ -34,7 +34,7 @@ export default function InlineAlert({
 }: Props) {
   return (
     <div className={cn(InlineAlertVariants({ variant, className }))}>
-      <h1 className="font-semibold">{title}</h1>
+      <h1 className="text-sm font-semibold">{title}</h1>
       <div className="text-sm text-neutral-600">{children}</div>
     </div>
   );

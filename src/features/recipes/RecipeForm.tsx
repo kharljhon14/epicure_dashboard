@@ -7,11 +7,18 @@ import { useRef, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { IoTrashOutline } from 'react-icons/io5';
+import type { KeyedMutator } from 'swr';
 
+import type { GetRecipesResponse } from '@/@types/recipe';
 import type { RecipeSchemaType } from '@/schemas/recipe';
 import { RecipeSchema } from '@/schemas/recipe';
 
-export default function RecipeForm() {
+interface Props {
+  onClose(): void;
+  mutate: KeyedMutator<GetRecipesResponse>;
+}
+
+export default function RecipeForm({ onClose, mutate }: Props) {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,7 +26,6 @@ export default function RecipeForm() {
     register,
     handleSubmit,
     control,
-    reset,
     getValues,
     watch,
     resetField,
@@ -44,9 +50,8 @@ export default function RecipeForm() {
       body: formData,
     });
     if (res.ok) {
-      alert('nice!');
-
-      reset();
+      onClose();
+      mutate();
     } else {
       const { error } = await res.json();
       console.error(error);
@@ -147,6 +152,12 @@ export default function RecipeForm() {
             </div>
           )}
         </div>
+
+        {errors.image?.message && (
+          <span className="text-xs text-danger-500">
+            {errors.image.message}
+          </span>
+        )}
 
         <Input
           {...register('name')}

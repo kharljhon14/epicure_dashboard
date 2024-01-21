@@ -24,8 +24,8 @@ export default function MyRecipesContainer() {
   const pageNumber = searchParams.get('pageNumber');
 
   const { data: userData } = useSWR<GetUserResponse>('/api/user', fetcher);
-  const { data, isLoading, error } = useSWR<GetRecipesResponse>(
-    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user.id}`,
+  const { data, isLoading, error, mutate } = useSWR<GetRecipesResponse>(
+    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id}`,
     fetcher
   );
   const [total, setTotal] = useState<number | null>();
@@ -71,11 +71,11 @@ export default function MyRecipesContainer() {
     <div>
       {data?.recipes && (
         <>
-          <div className="flex flex-col items-center justify-between">
-            <h1 className="mb-6 text-center text-2xl font-extrabold text-gray-600 lg:text-left lg:text-3xl">
+          <div className="mb-6 flex flex-col items-center justify-between">
+            <h1 className=" mb-6 text-center text-2xl font-extrabold text-gray-600 lg:text-left lg:text-3xl">
               🌱 Your Delicious Creations, {userData?.user.name}!
             </h1>
-            <RecipeFormContainer />
+            <RecipeFormContainer mutate={mutate} />
           </div>
 
           <RecipeCards recipes={data?.recipes} />
