@@ -5,3 +5,7 @@ export interface GetRecipesResponse {
   recipes: Array<RecipeDocument>;
   total: number;
 }
+
+export interface GetRecipeResponse {
+  recipe: RecipeDocument;
+}
