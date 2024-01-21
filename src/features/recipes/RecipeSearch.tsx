@@ -1,8 +1,8 @@
-import { Button, Input } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
-import { IoIosSearch } from 'react-icons/io';
+import { IoSearchOutline } from 'react-icons/io5';
 
 export default function RecipeSearch() {
   const [searchValue, setSearchValue] = useState('');
@@ -30,29 +30,24 @@ export default function RecipeSearch() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-6 md:mx-2"
       autoComplete="off"
     >
-      <div className="flex items-center space-x-2">
-        <Input
-          placeholder="Search"
-          className="lg:w-1/5"
-          size="sm"
-          variant="bordered"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          isClearable
-          onClear={handleClear}
-        />
-        <Button
-          size="lg"
-          color="primary"
-          type="submit"
-          isIconOnly
-        >
-          <IoIosSearch size={24} />
-        </Button>
-      </div>
+      <Input
+        size="sm"
+        variant="bordered"
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
+        onClear={handleClear}
+        classNames={{
+          base: 'max-w-full sm:max-w-lg h-10',
+          mainWrapper: 'h-full',
+          input: 'text-small',
+          inputWrapper:
+            'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
+        }}
+        placeholder="Type to search..."
+        startContent={<IoSearchOutline />}
+      />
     </form>
   );
 }

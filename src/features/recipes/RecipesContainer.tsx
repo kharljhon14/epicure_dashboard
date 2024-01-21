@@ -2,38 +2,87 @@
 
 import { Pagination } from '@nextui-org/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { SWRConfig } from 'swr';
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
+import type { GetRecipesResponse } from '@/@types/recipe';
 import { PAGINATION_LIMIT } from '@/utils/contansts';
 import fetcher from '@/utils/fetcher';
 
 import RecipeCards from './RecipeCards';
+import RecipeCardSkeleton from './RecipeCardSkeleton';
 
 export default function RecipesContainer() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
-
-  const pageNumber = searchParams.get('pageNumber');
   const router = useRouter();
 
+  // Get query Params
+  const q = searchParams.get('q');
+  const pageNumber = searchParams.get('pageNumber');
+
+  const { data, isLoading, error } = useSWR<GetRecipesResponse>(
+    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}`,
+    fetcher
+  );
   const [total, setTotal] = useState<number | null>();
 
-  return (
-    <SWRConfig value={{ fetcher }}>
-      <RecipeCards setTotal={setTotal} />
-      {total && total > PAGINATION_LIMIT && (
-        <div className="mt-10 flex items-center justify-center">
-          <Pagination
-            showControls
-            page={parseInt(pageNumber ?? '1', 10)}
-            onChange={(p) => {
-              router.push(`${pathName}?pageNumber=${p}`);
-            }}
-            total={Math.ceil(total / PAGINATION_LIMIT)}
-          />
+  useEffect(() => {
+    if (data) {
+      setTotal(data.total);
+    }
+  }, [data]);
+
+  if (error) return <div>Failed to load</div>;
+  if (isLoading)
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
         </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+        <div className="flex items-center justify-center">
+          <RecipeCardSkeleton />
+        </div>
+      </div>
+    );
+
+  return (
+    <div>
+      {data?.recipes && (
+        <>
+          <RecipeCards recipes={data?.recipes} />
+          {total && total > PAGINATION_LIMIT && (
+            <div className="mt-10 flex items-center justify-center">
+              <Pagination
+                showControls
+                page={parseInt(pageNumber ?? '1', 10)}
+                onChange={(p) => {
+                  router.push(`${pathName}?pageNumber=${p}`);
+                }}
+                total={Math.ceil(total / PAGINATION_LIMIT)}
+              />
+            </div>
+          )}
+        </>
       )}
-    </SWRConfig>
+    </div>
   );
 }

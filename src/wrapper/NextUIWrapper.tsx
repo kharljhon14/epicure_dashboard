@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { type PropsWithChildren } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR from 'swr';
 
 import type { GetUserResponse } from '@/@types/user';
 import AuthModal from '@/features/auth/AuthModal';
@@ -23,12 +23,11 @@ interface Props extends PropsWithChildren {}
 export default function NextUIWrapper({ children }: Props) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  const { data } = useSWR<GetUserResponse>('/api/user', fetcher);
-  const { mutate } = useSWRConfig();
+  const { data, mutate } = useSWR<GetUserResponse>('/api/user', fetcher);
 
   const signOut = async () => {
     await fetch('/api/signout');
-    mutate('/api/user');
+    mutate();
   };
 
   return (

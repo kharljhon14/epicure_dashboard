@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
-import { IoCloudUploadOutline, IoTrashOutline } from 'react-icons/io5';
+import { IoTrashOutline } from 'react-icons/io5';
 
 import type { RecipeSchemaType } from '@/schemas/recipe';
 import { RecipeSchema } from '@/schemas/recipe';
@@ -84,41 +84,36 @@ export default function RecipeForm() {
                   ref={imageInputRef}
                   disabled={isLoading}
                 />
-                <label
-                  htmlFor="recipeImage"
-                  className={`${isLoading ? 'cursor-default' : 'cursor-pointer'}`}
-                >
-                  <div className=" relative flex h-48 items-center justify-center rounded-lg  border-2 border-dashed border-neutral-200 bg-neutral-50 p-4 hover:bg-neutral-200/70 ">
-                    <div className="flex flex-col items-center space-y-2 font-bold text-neutral-800">
-                      <IoCloudUploadOutline size={46} />
-                      <span>Select recipe image</span>
-                    </div>
-
-                    {watch('image') && (
-                      <div className=" absolute inset-0 overflow-hidden rounded-lg transition-opacity duration-250 hover:opacity-20">
-                        <Image
-                          width={100}
-                          height={100}
-                          src={URL.createObjectURL(getValues('image') as File)}
-                          alt="Recipe"
-                          style={{
-                            width: 'auto',
-                            height: 'auto',
-                            objectPosition: 'center',
-                            objectFit: 'contain',
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </label>
               </div>
             );
           }}
         />
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center justify-center space-x-2">
+        <div className="flex space-x-2">
+          <div className=" relative flex h-48 w-48 shrink-0 items-center justify-center rounded-lg  border-2 border-dashed border-neutral-200 bg-neutral-50 p-4">
+            <div className="flex flex-col items-center space-y-2 font-bold text-neutral-400">
+              <span className="text-center text-sm">Recipe image</span>
+            </div>
+
+            {watch('image') && (
+              <div className=" absolute inset-0 overflow-hidden rounded-lg transition-opacity duration-250">
+                <Image
+                  width={192}
+                  height={192}
+                  src={URL.createObjectURL(getValues('image') as File)}
+                  alt="Recipe"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectPosition: 'center',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          <div>
             <Button
               color="secondary"
               onClick={() => imageInputRef.current?.click()}
@@ -127,23 +122,27 @@ export default function RecipeForm() {
             >
               Upload Image
             </Button>
-            <span className="text-ellipsis text-xs">
-              {watch('image')?.name}
-            </span>
           </div>
+        </div>
 
+        <div>
           {watch('image') && (
-            <Button
-              color="danger"
-              isIconOnly
-              radius="full"
-              disabled={isLoading}
-              onClick={() => {
-                resetField('image');
-              }}
-            >
-              <IoTrashOutline size={18} />
-            </Button>
+            <div className="flex items-center justify-between space-x-2">
+              <span className="text-ellipsis text-xs">
+                {watch('image')?.name}
+              </span>
+              <Button
+                color="danger"
+                isIconOnly
+                radius="full"
+                disabled={isLoading}
+                onClick={() => {
+                  resetField('image');
+                }}
+              >
+                <IoTrashOutline size={18} />
+              </Button>
+            </div>
           )}
         </div>
 
