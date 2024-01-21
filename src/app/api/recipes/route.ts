@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { cookies } from 'next/headers';
 
 import Recipe from '@/models/recipe';
@@ -17,12 +18,17 @@ export async function GET(req: Request) {
 
   const search = searchParams.get('q');
   const pageNumber = searchParams.get('pageNumber');
+  const owner = searchParams.get('owner');
+
+  const query = { name: { $regex: search ?? '', $options: 'i' } } as any;
+
+  if (owner && owner !== '') {
+    query['owner.id'] = new ObjectId(owner);
+  }
 
   const page = parseInt(pageNumber ?? '1', 10) - 1;
-  const total = await Recipe.countDocuments();
-  const recipes = await Recipe.find({
-    name: { $regex: search ?? '', $options: 'i' },
-  })
+  const total = await Recipe.countDocuments(query);
+  const recipes = await Recipe.find(query)
     .skip(page * PAGINATION_LIMIT)
     .limit(PAGINATION_LIMIT)
     .sort('-createdAt');
@@ -30,7 +36,7 @@ export async function GET(req: Request) {
   return Response.json({
     status: 'Success',
     recipes,
-    total: search !== '' ? recipes.length : total,
+    total,
   });
 }
 

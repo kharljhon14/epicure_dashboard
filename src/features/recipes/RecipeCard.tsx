@@ -10,7 +10,7 @@ interface Props {
 
 export default function RecipeCard({ recipe }: Props) {
   return (
-    <Card className="w-full max-w-sm p-1 shadow-md">
+    <Card className=" min-h-[26rem] w-full max-w-sm p-1 shadow-md">
       <CardHeader className="flex items-center justify-center">
         <div className="relative h-60 w-full overflow-hidden rounded-md">
           {recipe.image ? (
@@ -36,7 +36,7 @@ export default function RecipeCard({ recipe }: Props) {
       </CardHeader>
       <CardBody>
         <div className="space-y-2">
-          <h1 className="text-lg font-extrabold text-neutral-800">
+          <h1 className="line-clamp-1 text-ellipsis text-lg font-extrabold text-neutral-800">
             {recipe.name}
           </h1>
           <p className="line-clamp-2 text-ellipsis text-sm">
