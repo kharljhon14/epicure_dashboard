@@ -13,9 +13,9 @@ export default function RecipeCard({ recipe }: Props) {
   return (
     <Link
       href={`/recipes/${recipe._id}`}
-      className="w-full"
+      className="flex w-full items-center justify-center"
     >
-      <Card className=" min-h-[26rem] max-w-sm p-1 shadow-md">
+      <Card className=" min-h-[26rem] w-full max-w-sm p-1 shadow-md">
         <CardHeader className="flex items-center justify-center">
           <div className="relative h-60 w-full overflow-hidden rounded-md">
             {recipe.image ? (

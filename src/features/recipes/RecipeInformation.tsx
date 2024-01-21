@@ -1,7 +1,9 @@
 'use client';
 
+import { Button } from '@nextui-org/react';
 import Image from 'next/image';
-import { IoImageOutline } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+import { IoChevronBack, IoImageOutline } from 'react-icons/io5';
 import useSWR from 'swr';
 
 import type { GetRecipeResponse } from '@/@types/recipe';
@@ -16,13 +18,25 @@ export default function RecipeInformation({ id }: Props) {
     `/api/recipes/${id}`,
     fetcher
   );
+
+  const router = useRouter();
   if (error) return <div>Failed to load</div>;
   if (isLoading) return <div>Loading</div>;
   return (
     <div className="px-4">
-      <div className="mb-6 flex flex-col space-y-1">
-        <h1 className="text-4xl font-semibold">{data?.recipe.name}</h1>
-        <span>By {data?.recipe.owner.name}</span>
+      <div className="mb-6 flex items-center space-x-4">
+        <Button
+          isIconOnly
+          onClick={() => router.back()}
+        >
+          <IoChevronBack />
+        </Button>
+        <div>
+          <h1 className="text-4xl font-semibold">{data?.recipe.name}</h1>
+          <span className="text-xs text-gray-500">
+            By {data?.recipe.owner.name}
+          </span>
+        </div>
       </div>
 
       <div className="flex flex-col space-y-6 lg:flex-row lg:space-x-6 lg:space-y-0">
@@ -48,15 +62,15 @@ export default function RecipeInformation({ id }: Props) {
               </div>
             )}
           </div>
-
-          <div className="">
+        </div>
+        <div className=" space-y-6">
+          <div className=" w-4/5">
             <h2 className="text-2xl font-semibold">Ingredients</h2>
             <p className=" whitespace-pre-line">{data?.recipe.ingredients}</p>
           </div>
-        </div>
-        <div className=" space-y-6">
+
           <div className="">
-            <h2 className="text-2xl font-semibold">Instructions</h2>
+            <h2 className="text-2xl font-semibold">Directions</h2>
             <p className=" whitespace-pre-line">{data?.recipe.instruction}</p>
           </div>
         </div>

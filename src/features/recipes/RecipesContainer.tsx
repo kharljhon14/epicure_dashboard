@@ -68,7 +68,7 @@ export default function RecipesContainer() {
     <div>
       {data?.recipes && (
         <div>
-          <h1 className="mb-8 text-4xl font-extrabold text-gray-800">
+          <h1 className="mx-4 mb-8 text-4xl font-extrabold text-gray-800 lg:mx-0">
             {q
               ? `Results for ${q}`
               : 'Welcome to Your Culinary Playground! 🍽️✨'}
