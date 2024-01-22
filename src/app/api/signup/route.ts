@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
   const url = `${NEXT_BASE_URL}/activate/${activationToken}`;
 
-  sendVericifationTokenEmail(
+  await sendVericifationTokenEmail(
     {
       name: body.name,
       email: body.email,

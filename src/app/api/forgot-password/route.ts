@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
   const url = `${NEXT_BASE_URL}/reset-password/${forgotPasswordToken}`;
 
-  sendForgotPasswordTokenEmail(
+  await sendForgotPasswordTokenEmail(
     {
       name: user.name,
       email: user.email,
