@@ -139,7 +139,7 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
               </span>
             </div>
 
-            {watch('image') && (
+            {watch('image') ? (
               <div className=" absolute inset-0 overflow-hidden rounded-lg transition-opacity duration-250">
                 <Image
                   width={192}
@@ -154,6 +154,23 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
                   }}
                 />
               </div>
+            ) : (
+              <div className=" absolute inset-0 overflow-hidden rounded-lg transition-opacity duration-250">
+                {selectedRecipe?.image && !watch('image') && (
+                  <Image
+                    width={192}
+                    height={192}
+                    src={selectedRecipe?.image?.url ?? ''}
+                    alt="Recipe"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectPosition: 'center',
+                      objectFit: 'cover',
+                    }}
+                  />
+                )}
+              </div>
             )}
           </div>
 
@@ -164,7 +181,7 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
               className="shrink-0"
               disabled={isLoading}
             >
-              Upload Image
+              {selectedRecipe ? 'Update Image' : 'Upload Image'}
             </Button>
           </div>
         </div>
