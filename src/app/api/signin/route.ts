@@ -24,10 +24,6 @@ export async function POST(req: Request) {
     name: user.name,
   });
 
-  user.tokens.push(sessionToken);
-
-  await user.save();
-
   const cookieStore = cookies();
 
   const oneDay = 60 * 60 * 24;

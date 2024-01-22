@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   } catch (err) {
     if (err instanceof JsonWebTokenError)
       return Response.json(
-        { error: 'Invalid token!', errorMessage: err.message },
+        { error: 'Invalid token!', errorMessage: 'Oops! Something went wrong' },
         { status: 422 }
       );
   }

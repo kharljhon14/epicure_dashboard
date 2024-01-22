@@ -30,8 +30,6 @@ export async function POST(req: Request) {
     password: body.password,
   });
 
-  await newUser.save();
-
   const token = generateToken();
 
   const activationToken = createActivationToken({

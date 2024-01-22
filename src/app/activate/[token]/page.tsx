@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
+import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -38,7 +38,7 @@ export default function ActivateAccountPage({ params }: Props) {
   }, [params]);
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500">
+    <div className="flex items-center justify-center">
       {error ? (
         <Card className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg transition-transform duration-300 hover:scale-105">
           <CardHeader className="flex items-center justify-center">
@@ -83,7 +83,6 @@ export default function ActivateAccountPage({ params }: Props) {
               explore the world of Epicure. Dive in and start your culinary
               journey!
             </p>
-            <Button color="primary">Log In</Button>
           </CardBody>
         </Card>
       )}
