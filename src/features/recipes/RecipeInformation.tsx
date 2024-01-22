@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
+import { Button, Spinner } from '@nextui-org/react';
 import Image from 'next/image';
 import { notFound, useRouter } from 'next/navigation';
 import { IoChevronBack, IoImageOutline } from 'react-icons/io5';
@@ -22,7 +22,15 @@ export default function RecipeInformation({ id }: Props) {
   );
   if (error) notFound();
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center">
+        <Spinner
+          label="Loading..."
+          size="lg"
+        />
+      </div>
+    );
   return (
     <div className="px-4">
       <div className="mb-6 flex items-center space-x-4">

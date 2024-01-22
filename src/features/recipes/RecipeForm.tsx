@@ -245,6 +245,7 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
                 }
                 disabled={isLoading}
                 value={value}
+                maxRows={6}
                 onChange={onChange}
                 {...fields}
               />
@@ -267,6 +268,7 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
                 disabled={isLoading}
                 value={value}
                 onChange={onChange}
+                maxRows={6}
                 {...fields}
               />
             );
@@ -281,6 +283,15 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
         isLoading={isLoading}
       >
         {selectedRecipe ? 'Update' : 'Submit'}
+      </Button>
+      <Button
+        type="button"
+        className="mt-2 w-full"
+        onClick={onClose}
+        disabled={isLoading}
+        isLoading={isLoading}
+      >
+        Cancel
       </Button>
     </form>
   );
