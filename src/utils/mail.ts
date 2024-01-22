@@ -11,6 +11,7 @@ import {
 
 export function generateEmailTransporter() {
   return nodemailer.createTransport({
+    port: 465,
     service: 'Gmail',
     auth: {
       user: MAILING_EMAIL,
