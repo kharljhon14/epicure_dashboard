@@ -52,6 +52,27 @@ export const ForgotPasswordRequestSchema = z.object({
     .email('Please enter a valid email!'),
 });
 
-export type ForgotPasswordRequestScehmaType = z.infer<
+export type ForgotPasswordRequestSchemaType = z.infer<
   typeof ForgotPasswordRequestSchema
+>;
+
+export const ResetPasswordRequestSchema = z
+  .object({
+    password: z
+      .string({ required_error: 'Password is required!' })
+      .min(8, 'Password should atleast be 8 characters long!')
+      .max(100, 'Password should be less than 100 characters!'),
+    confirm_password: z
+      .string({
+        required_error: 'Confirm password is required!',
+      })
+      .min(8, 'Confirm password should atleast be 8 characters long!'),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: "Password doesn't match",
+    path: ['confirm_password'],
+  });
+
+export type ResetPasswordRequestSchemaType = z.infer<
+  typeof ResetPasswordRequestSchema
 >;

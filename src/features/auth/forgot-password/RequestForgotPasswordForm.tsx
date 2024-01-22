@@ -7,7 +7,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import InlineAlert from '@/components/InlineAlert';
-import type { ForgotPasswordRequestScehmaType } from '@/schemas/user';
+import type { ForgotPasswordRequestSchemaType } from '@/schemas/user';
 import { ForgotPasswordRequestSchema } from '@/schemas/user';
 
 interface Props {
@@ -23,11 +23,11 @@ export default function RequestForgotPasswordForm({ handleAuthState }: Props) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ForgotPasswordRequestScehmaType>({
+  } = useForm<ForgotPasswordRequestSchemaType>({
     resolver: zodResolver(ForgotPasswordRequestSchema),
   });
 
-  const onSubmit: SubmitHandler<ForgotPasswordRequestScehmaType> = async (
+  const onSubmit: SubmitHandler<ForgotPasswordRequestSchemaType> = async (
     data
   ) => {
     setLoading(true);

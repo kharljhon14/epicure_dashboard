@@ -5,7 +5,7 @@ import User from '@/models/user';
 import connectDB from '@/utils/connectDB';
 import { ACTIVATE_TOKEN_SECRET } from '@/utils/enviromentVariables';
 
-interface UserToken {
+export interface UserToken {
   token: string;
   id: string;
 }
@@ -46,6 +46,14 @@ export async function POST(req: Request) {
         { error: 'Invalid token!', errorMessage: 'Oops! Something went wrong' },
         { status: 422 }
       );
+
+    return Response.json(
+      {
+        error: 'Something when wrong!',
+        errorMessage: 'Oops! Something went wrong',
+      },
+      { status: 500 }
+    );
   }
 
   return Response.json({ message: 'Account activated!' });
