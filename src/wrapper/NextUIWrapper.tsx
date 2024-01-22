@@ -35,7 +35,7 @@ export default function NextUIWrapper({ children }: Props) {
 
   return (
     <NextUIProvider>
-      <div className="min-h-screen ">
+      <div className="flex h-screen flex-col justify-between">
         <Header>
           {data?.user ? (
             <Dropdown>
@@ -84,8 +84,8 @@ export default function NextUIWrapper({ children }: Props) {
           onOpenChange={onOpenChange}
           onClose={onClose}
         />
+        <Footer />
       </div>
-      <Footer />
     </NextUIProvider>
   );
 }
