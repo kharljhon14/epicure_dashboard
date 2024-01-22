@@ -2,12 +2,11 @@
 
 import { Button } from '@nextui-org/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { IoChevronBack, IoImageOutline } from 'react-icons/io5';
 import useSWR from 'swr';
 
 import type { GetRecipeResponse } from '@/@types/recipe';
-import type { GetUserResponse } from '@/@types/user';
 import fetcher from '@/utils/fetcher';
 
 interface Props {
@@ -15,17 +14,14 @@ interface Props {
 }
 
 export default function RecipeInformation({ id }: Props) {
-  const { data: userData } = useSWR<GetUserResponse>('/api/user');
+  const router = useRouter();
 
   const { data, isLoading, error } = useSWR<GetRecipeResponse>(
     `/api/recipes/${id}`,
     fetcher
   );
+  if (error) notFound();
 
-  console.log(userData);
-
-  const router = useRouter();
-  if (error) return <div>Failed to load</div>;
   if (isLoading) return <div>Loading</div>;
   return (
     <div className="px-4">

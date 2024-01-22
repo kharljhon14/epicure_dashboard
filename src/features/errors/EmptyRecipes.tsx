@@ -4,7 +4,7 @@ import type { ScopedMutator } from 'swr/_internal';
 import RecipeFormContainer from '../recipes/RecipeFormContainer';
 
 interface Props {
-  mutate: ScopedMutator;
+  mutate?: ScopedMutator;
 }
 
 export default function EmptyRecipes({ mutate }: Props) {
@@ -17,7 +17,7 @@ export default function EmptyRecipes({ mutate }: Props) {
         It seems like the recipe book is empty. Let&apos;s spice things up and
         add some delicious recipes!
       </p>
-      <RecipeFormContainer mutate={mutate} />
+      {mutate && <RecipeFormContainer mutate={mutate} />}
       <Image
         width={600}
         height={600}

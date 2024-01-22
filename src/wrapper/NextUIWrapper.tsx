@@ -35,56 +35,56 @@ export default function NextUIWrapper({ children }: Props) {
 
   return (
     <NextUIProvider>
-      <Header>
-        {data?.user ? (
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                variant="bordered"
-                color="primary"
-                size="sm"
+      <div className="min-h-screen ">
+        <Header>
+          {data?.user ? (
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  variant="bordered"
+                  color="primary"
+                  size="sm"
+                >
+                  👋 Hello, {data.user.name}!
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="User Actions"
+                onAction={(key) => {
+                  if (key === 'signout') {
+                    signOut();
+                  }
+                  if (key === 'recipes') {
+                    router.push('/user');
+                  }
+                }}
               >
-                👋 Hello, {data.user.name}!
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="User Actions"
-              onAction={(key) => {
-                if (key === 'signout') {
-                  signOut();
-                }
-                if (key === 'recipes') {
-                  router.push('/user');
-                }
-              }}
+                <DropdownItem key="recipes">📖 My Recipes</DropdownItem>
+                <DropdownItem
+                  key="signout"
+                  className="text-danger"
+                  color="danger"
+                >
+                  🚪 Sign Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            <Button
+              color="primary"
+              onClick={onOpen}
             >
-              <DropdownItem key="recipes">📖 My Recipes</DropdownItem>
-              <DropdownItem
-                key="signout"
-                className="text-danger"
-                color="danger"
-              >
-                🚪 Sign Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        ) : (
-          <Button
-            color="primary"
-            onClick={onOpen}
-          >
-            🚀 Sign In
-          </Button>
-        )}
-      </Header>
-      <div className="mb-20 mt-16 min-h-screen md:mx-24 lg:mx-32">
-        {children}
+              🚀 Sign In
+            </Button>
+          )}
+        </Header>
+        <div className="mb-20 mt-16 md:mx-24 lg:mx-32">{children}</div>
+        <AuthModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+        />
       </div>
-      <AuthModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onClose={onClose}
-      />
       <Footer />
     </NextUIProvider>
   );
