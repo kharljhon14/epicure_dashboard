@@ -2,7 +2,7 @@
 
 import { Card, CardBody, CardHeader, Spinner } from '@nextui-org/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ResetPasswordForm from '@/features/auth/forgot-password/ResetPasswordForm';
 
@@ -20,6 +20,7 @@ interface ErrorType {
 export default function ActivateAccountPage({ params }: Props) {
   const [error, setError] = useState<ErrorType>();
   const [isLoading, setIsLoading] = useState(true);
+  const isInitialRender = useRef(true);
 
   const validateToken = async () => {
     if (params.token) {
@@ -39,6 +40,11 @@ export default function ActivateAccountPage({ params }: Props) {
   };
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
     validateToken();
   }, [params]);
 

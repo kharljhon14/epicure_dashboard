@@ -17,11 +17,9 @@ export async function POST(req: Request) {
 
   try {
     const result = jwt.verify(token, ACTIVATE_TOKEN_SECRET) as UserToken;
-    console.log(result);
 
     const user = await User.findOne({ name: result.name, email: result.email });
 
-    console.log(user);
     if (user)
       return Response.json(
         {
