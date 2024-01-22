@@ -53,3 +53,32 @@ export async function sendVericifationTokenEmail(
     ],
   });
 }
+
+export async function sendForgotPasswordTokenEmail(
+  profile: Profile,
+  url: string
+) {
+  const transport = generateEmailTransporter();
+
+  const welcomeMessage = `Hello, ${profile.name}! You've requested a password reset. Please click the reset button to change your password.`;
+
+  transport.sendMail({
+    to: profile.email,
+    from: VERIFICATION_EMAIL,
+    subject: 'Forgot Password Request!',
+    html: generateTemplate({
+      title: 'Forgot Password Request!',
+      message: welcomeMessage,
+      logo: 'cid:logo',
+      link: url,
+      btnTitle: 'Reset',
+    }),
+    attachments: [
+      {
+        filename: 'logo.jpg',
+        path: path.join(__dirname, '../../../../../public/logo.jpg'),
+        cid: 'logo',
+      },
+    ],
+  });
+}

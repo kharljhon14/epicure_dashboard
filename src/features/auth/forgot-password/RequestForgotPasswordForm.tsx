@@ -2,40 +2,34 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { useSWRConfig } from 'swr';
 
 import InlineAlert from '@/components/InlineAlert';
-import type { SignInUserScehmaType } from '@/schemas/user';
-import { SignInUSerSchema } from '@/schemas/user';
+import type { ForgotPasswordRequestScehmaType } from '@/schemas/user';
+import { ForgotPasswordRequestSchema } from '@/schemas/user';
 
 interface Props {
   handleAuthState(value: 'signin' | 'signup' | 'forgot-password'): void;
   onClose(): void;
 }
 
-export default function RequestForgotPasswordForm({
-  handleAuthState,
-  onClose,
-}: Props) {
+export default function RequestForgotPasswordForm({ handleAuthState }: Props) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const { mutate } = useSWRConfig();
-  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInUserScehmaType>({
-    resolver: zodResolver(SignInUSerSchema),
+  } = useForm<ForgotPasswordRequestScehmaType>({
+    resolver: zodResolver(ForgotPasswordRequestSchema),
   });
 
-  const onSubmit: SubmitHandler<SignInUserScehmaType> = async (data) => {
+  const onSubmit: SubmitHandler<ForgotPasswordRequestScehmaType> = async (
+    data
+  ) => {
     setLoading(true);
     setErrorMessage('');
     const res = await fetch('/api/forgot-password', {
@@ -44,9 +38,7 @@ export default function RequestForgotPasswordForm({
     });
 
     if (res.ok) {
-      mutate('/api/user');
-      onClose();
-      router.push('/user');
+      handleAuthState('signin');
     } else {
       const { error } = await res.json();
 
