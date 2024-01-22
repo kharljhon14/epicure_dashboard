@@ -11,9 +11,7 @@ import {
 
 export function generateEmailTransporter() {
   return nodemailer.createTransport({
-    // host: 'sandbox.smtp.mailtrap.io',
-    // port: 2525,
-    service: 'gmail',
+    service: 'Gmail',
     auth: {
       user: MAILING_EMAIL,
       pass: MAILING_PASSWORD,
@@ -34,7 +32,7 @@ export async function sendVericifationTokenEmail(
 
   const welcomeMessage = `Greetings, ${profile.name}! Welcome to Epicure. Kindly use the provided OTP to verify your email.`;
 
-  transport.sendMail({
+  await transport.sendMail({
     to: profile.email,
     from: VERIFICATION_EMAIL,
     subject: 'Welcome to Epicure!',
@@ -63,7 +61,7 @@ export async function sendForgotPasswordTokenEmail(
 
   const welcomeMessage = `Hello, ${profile.name}! You've requested a password reset. Please click the reset button to change your password.`;
 
-  transport.sendMail({
+  await transport.sendMail({
     to: profile.email,
     from: VERIFICATION_EMAIL,
     subject: 'Forgot Password Request!',
