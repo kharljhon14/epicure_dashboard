@@ -10,7 +10,6 @@ export interface UserDocument {
   password: string;
   verified: boolean;
   avatar?: { url: string; publicId: string };
-  tokens: Array<string>;
 }
 
 interface Methods {
@@ -43,7 +42,6 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
       type: Boolean,
       default: false,
     },
-    tokens: [String],
   },
   { timestamps: true }
 );
