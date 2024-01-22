@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 
 import cloudinary from '@/cloudinary';
 import Recipe from '@/models/recipe';
+import type { UserDocument } from '@/models/user';
 import { RecipeSchema, type RecipeSchemaType } from '@/schemas/recipe';
 import { authenticated } from '@/utils/auth';
 import { uploadImageToCloudinary } from '@/utils/cloudinary';
@@ -54,16 +55,29 @@ export async function PATCH(req: Request, { params }: Params) {
         { status: 401 }
       );
 
-    const userId = await authenticated(token.value);
+    const user = await authenticated(token.value);
 
-    if (!userId)
+    if (!user)
       return Response.json(
         { error: 'Must be authenticated!' },
         { status: 401 }
       );
 
-    const recipe = await Recipe.findOneAndUpdate(
-      { _id: params.id },
+    const recipe = await Recipe.findById(params.id);
+
+    if (!recipe)
+      return Response.json(
+        { error: 'Could not find recipe!' },
+        { status: 404 }
+      );
+
+    if (recipe.owner.id.toString() !== user._id.toString())
+      return Response.json(
+        { error: 'You do not own this recipe!' },
+        { status: 403 }
+      );
+
+    await recipe.updateOne(
       {
         name: body.name,
         instruction: body.instruction,
@@ -73,12 +87,6 @@ export async function PATCH(req: Request, { params }: Params) {
         new: true,
       }
     );
-
-    if (!recipe)
-      return Response.json(
-        { error: 'Could not find recipe!' },
-        { status: 404 }
-      );
 
     if (body.image) {
       if (recipe.image?.publicId) {
@@ -113,10 +121,34 @@ export async function DELETE(_req: Request, { params }: Params) {
   if (!isValidObjectId(params.id))
     return Response.json({ error: 'Invalid recipe Id!' }, { status: 422 });
 
-  const recipe = await Recipe.findByIdAndDelete(params.id);
+  const recipe = await Recipe.findById(params.id);
 
   if (!recipe)
     return Response.json({ error: 'Could not find recipe!' }, { status: 404 });
+
+  const cookieStore = cookies();
+
+  const token = cookieStore.get('session');
+
+  if (!token?.value)
+    return Response.json({ error: 'Must be authenticated!' }, { status: 401 });
+
+  const user: UserDocument | null = await authenticated(token.value);
+
+  if (!user)
+    return Response.json({ error: 'Must be authenticated!' }, { status: 401 });
+
+  if (recipe.owner.id.toString() !== user._id.toString())
+    return Response.json(
+      { error: 'You do not own this recipe!' },
+      { status: 403 }
+    );
+
+  if (recipe.image) {
+    await cloudinary.uploader.destroy(recipe.image.publicId);
+  }
+
+  await recipe.deleteOne();
 
   return Response.json({ status: 'Success' });
 }
