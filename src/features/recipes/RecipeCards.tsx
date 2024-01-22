@@ -1,6 +1,7 @@
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import useSWR, { useSWRConfig } from 'swr';
 
 import type { GetUserResponse } from '@/@types/user';
@@ -54,6 +55,8 @@ export default function RecipeCards({ recipes }: Props) {
         `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${data?.user?.id}`
       );
     onClose();
+    toast.success('Recipe Deleted!');
+
     setIsloading(false);
   };
 

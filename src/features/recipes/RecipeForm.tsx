@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { IoTrashOutline } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 import useSWR from 'swr';
 import type { ScopedMutator } from 'swr/_internal';
 
@@ -62,12 +63,13 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
       });
       if (res.ok) {
         onClose();
+        toast.success('Recipe Updated!');
+
         mutate(
           `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id}`
         );
       } else {
-        const { error } = await res.json();
-        console.error(error);
+        toast.error('Something went wrong!');
       }
     } else {
       const res = await fetch('/api/recipes', {
@@ -76,12 +78,12 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
       });
       if (res.ok) {
         onClose();
+        toast.success('Recipe Added!');
         mutate(
           `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id}`
         );
       } else {
-        const { error } = await res.json();
-        console.error(error);
+        toast.error('Something went wrong!');
       }
     }
 
@@ -283,15 +285,6 @@ export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
         isLoading={isLoading}
       >
         {selectedRecipe ? 'Update' : 'Submit'}
-      </Button>
-      <Button
-        type="button"
-        className="mt-2 w-full"
-        onClick={onClose}
-        disabled={isLoading}
-        isLoading={isLoading}
-      >
-        Cancel
       </Button>
     </form>
   );

@@ -11,6 +11,7 @@ import {
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { type PropsWithChildren } from 'react';
+import { Flip, ToastContainer } from 'react-toastify';
 import useSWR from 'swr';
 
 import type { GetUserResponse } from '@/@types/user';
@@ -35,6 +36,17 @@ export default function NextUIWrapper({ children }: Props) {
 
   return (
     <NextUIProvider>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        theme="dark"
+        transition={Flip}
+      />
       <div className="flex h-screen flex-col justify-between">
         <Header>
           {data?.user ? (
