@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useSWRConfig } from 'swr';
 
 import InlineAlert from '@/components/InlineAlert';
@@ -18,8 +17,10 @@ interface Props {
   onClose(): void;
 }
 
-export default function SignInForm({ handleAuthState, onClose }: Props) {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+export default function RequestForgotPasswordForm({
+  handleAuthState,
+  onClose,
+}: Props) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -37,7 +38,7 @@ export default function SignInForm({ handleAuthState, onClose }: Props) {
   const onSubmit: SubmitHandler<SignInUserScehmaType> = async (data) => {
     setLoading(true);
     setErrorMessage('');
-    const res = await fetch('/api/signin', {
+    const res = await fetch('/api/forgot-password', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -52,10 +53,6 @@ export default function SignInForm({ handleAuthState, onClose }: Props) {
       setErrorMessage(error);
     }
     setLoading(false);
-  };
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -81,32 +78,19 @@ export default function SignInForm({ handleAuthState, onClose }: Props) {
           errorMessage={errors.email?.message && errors.email.message}
           disabled={loading}
         />
-        <Input
-          {...register('password')}
-          type={passwordVisible ? 'text' : 'password'}
-          label="Password*"
-          endContent={
-            <button
-              className="text-2xl text-neutral-500 focus:outline-none"
-              type="button"
-              onClick={togglePasswordVisibility}
-            >
-              {passwordVisible ? <IoMdEye /> : <IoMdEyeOff />}
-            </button>
-          }
-          isInvalid={!!errors.password?.message}
-          errorMessage={errors.password?.message && errors.password.message}
-          disabled={loading}
-        />
 
         <div className="flex justify-between text-sm">
-          <button
-            onClick={() => handleAuthState('forgot-password')}
-            type="button"
-            className=" hover:underline"
-          >
-            Forgot Password
-          </button>
+          <p className="text-center text-sm text-gray-600">
+            Already part of the Epicure family?
+            <button
+              onClick={() => handleAuthState('signin')}
+              type="button"
+              className="ml-1 text-blue-500 hover:underline"
+            >
+              Sign in here
+            </button>
+          </p>
+
           <button
             onClick={() => handleAuthState('signup')}
             type="button"

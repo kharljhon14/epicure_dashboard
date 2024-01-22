@@ -12,11 +12,11 @@ import InlineAlert from '@/components/InlineAlert';
 import { CreateUserSchema, type CreateUserSchemaType } from '@/schemas/user';
 
 interface Props {
-  handlIsSignUp(value: boolean): void;
+  handleAuthState(value: 'signin' | 'signup' | 'forgot-password'): void;
   onClose(): void;
 }
 
-export default function SignUpForm({ handlIsSignUp }: Props) {
+export default function SignUpForm({ handleAuthState, onClose }: Props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +43,7 @@ export default function SignUpForm({ handlIsSignUp }: Props) {
 
     if (res.ok) {
       router.push('/');
+      onClose();
     } else {
       const { error } = await res.json();
 
@@ -163,7 +164,7 @@ export default function SignUpForm({ handlIsSignUp }: Props) {
         <p className="text-center text-sm text-gray-600">
           Already part of the Epicure family?
           <button
-            onClick={() => handlIsSignUp(false)}
+            onClick={() => handleAuthState('signin')}
             type="button"
             className="ml-1 text-blue-500 hover:underline"
           >
