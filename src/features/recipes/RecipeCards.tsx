@@ -29,7 +29,10 @@ export default function RecipeCards({ recipes }: Props) {
     onOpenChange: updateOnChange,
     onClose: updateOnClose,
   } = useDisclosure();
+
   const [selectedRecipe, setSelectedRecipe] = useState<SelectedRecipe>();
+  const [isLoading, setIsloading] = useState(false);
+
   const pathName = usePathname();
 
   const searchParams = useSearchParams();
@@ -42,6 +45,7 @@ export default function RecipeCards({ recipes }: Props) {
   const { data } = useSWR<GetUserResponse>('/api/user', fetcher);
 
   const handleDelete = async () => {
+    setIsloading(true);
     const res = await fetch(`/api/recipes/${selectedRecipe?.recipe._id}`, {
       method: 'DELETE',
     });
@@ -50,6 +54,7 @@ export default function RecipeCards({ recipes }: Props) {
         `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${data?.user?.id}`
       );
     onClose();
+    setIsloading(false);
   };
 
   useEffect(() => {
@@ -88,6 +93,7 @@ export default function RecipeCards({ recipes }: Props) {
           <RecipeDeleteConfirmationBody
             selectedRecipe={selectedRecipe}
             handleDelete={handleDelete}
+            isLoading={isLoading}
             onClose={onClose}
           />
         </ModalContent>

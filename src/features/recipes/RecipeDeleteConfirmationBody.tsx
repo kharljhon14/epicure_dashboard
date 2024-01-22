@@ -5,12 +5,14 @@ import type { SelectedRecipe } from './RecipeCards';
 interface Props {
   selectedRecipe?: SelectedRecipe;
   handleDelete(): void;
+  isLoading: boolean;
   onClose(): void;
 }
 
 export default function RecipeDeleteConfirmationBody({
   selectedRecipe,
   handleDelete,
+  isLoading,
   onClose,
 }: Props) {
   return (
@@ -30,11 +32,18 @@ export default function RecipeDeleteConfirmationBody({
             e.stopPropagation();
             handleDelete();
           }}
+          disabled={isLoading}
+          isLoading={isLoading}
           color="danger"
         >
           Yes, delete it!
         </Button>
-        <Button onClick={onClose}>No, keep it</Button>
+        <Button
+          disabled={isLoading}
+          onClick={onClose}
+        >
+          No, keep it
+        </Button>
       </ModalBody>
     </>
   );

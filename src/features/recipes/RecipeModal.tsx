@@ -24,7 +24,7 @@ export default function RecipeModal({
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      size="xl"
+      size="2xl"
     >
       <ModalContent className="py-4">
         <ModalHeader className="flex flex-col items-center justify-center space-y-2">
