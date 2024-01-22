@@ -7,6 +7,7 @@ import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
 import InlineAlert from '@/components/InlineAlert';
 import type { ResetPasswordRequestSchemaType } from '@/schemas/user';
@@ -45,6 +46,7 @@ export default function ResetPasswordForm({ token }: Props) {
 
     if (res.ok) {
       router.push('/');
+      toast.success('Your password is updated!', { position: 'top-center' });
     } else {
       const { error } = await res.json();
 

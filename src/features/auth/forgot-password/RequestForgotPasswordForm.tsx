@@ -5,6 +5,7 @@ import { Button, Input } from '@nextui-org/react';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import InlineAlert from '@/components/InlineAlert';
 import type { ForgotPasswordRequestSchemaType } from '@/schemas/user';
@@ -39,9 +40,9 @@ export default function RequestForgotPasswordForm({ handleAuthState }: Props) {
 
     if (res.ok) {
       handleAuthState('signin');
+      toast.info('An email has been sent to you.', { position: 'top-center' });
     } else {
       const { error } = await res.json();
-
       setErrorMessage(error);
     }
     setLoading(false);

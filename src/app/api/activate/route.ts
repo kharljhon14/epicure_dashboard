@@ -1,13 +1,13 @@
 import jwt, { JsonWebTokenError } from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
 
 import User from '@/models/user';
 import connectDB from '@/utils/connectDB';
 import { ACTIVATE_TOKEN_SECRET } from '@/utils/enviromentVariables';
 
 export interface UserToken {
-  token: string;
-  id: string;
+  name: string;
+  email: string;
+  password: string;
 }
 
 export async function POST(req: Request) {
@@ -17,20 +17,12 @@ export async function POST(req: Request) {
 
   try {
     const result = jwt.verify(token, ACTIVATE_TOKEN_SECRET) as UserToken;
-    const id = new ObjectId(result.id);
+    console.log(result);
 
-    const user = await User.findById(id);
+    const user = await User.findOne({ name: result.name, email: result.email });
 
-    if (!user)
-      return Response.json(
-        {
-          error: 'Invalid user!',
-          errorMessage: 'The specified user could not be found.',
-        },
-        { status: 404 }
-      );
-
-    if (user.verified)
+    console.log(user);
+    if (user)
       return Response.json(
         {
           error: 'Account already verified!',
@@ -39,7 +31,15 @@ export async function POST(req: Request) {
         { status: 422 }
       );
 
-    await User.findOneAndUpdate(id, { verified: true });
+    const newUser = new User({
+      name: result.name,
+      email: result.email,
+      password: result.password,
+    });
+
+    await newUser.save();
+
+    return Response.json({ message: 'Account activated!' });
   } catch (err) {
     if (err instanceof JsonWebTokenError)
       return Response.json(
@@ -55,6 +55,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-
-  return Response.json({ message: 'Account activated!' });
 }

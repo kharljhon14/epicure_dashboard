@@ -1,9 +1,10 @@
+import { hash } from 'bcrypt';
+
 import User from '@/models/user';
 import type { CreateUserSchemaType } from '@/schemas/user';
 import { CreateUserSchema } from '@/schemas/user';
 import connectDB from '@/utils/connectDB';
 import { NEXT_BASE_URL } from '@/utils/enviromentVariables';
-import { generateToken } from '@/utils/helper';
 import { sendVericifationTokenEmail } from '@/utils/mail';
 import { schemaValidator } from '@/utils/schemaValidator';
 import { createActivationToken } from '@/utils/token';
@@ -24,25 +25,20 @@ export async function POST(req: Request) {
   if (doesEmailExist)
     return Response.json({ error: 'Email already exsist!' }, { status: 409 });
 
-  const newUser = new User({
-    name: body.name,
-    email: body.email,
-    password: body.password,
-  });
-
-  const token = generateToken();
+  const hashedPassword = await hash(body.password, 10);
 
   const activationToken = createActivationToken({
-    token,
-    id: newUser._id.toString(),
+    name: body.name,
+    email: body.email,
+    password: hashedPassword,
   });
 
   const url = `${NEXT_BASE_URL}/activate/${activationToken}`;
 
   sendVericifationTokenEmail(
     {
-      name: newUser.name,
-      email: newUser.email,
+      name: body.name,
+      email: body.email,
     },
     url
   );

@@ -19,8 +19,6 @@ import { sendForgotPasswordTokenEmail } from '@/utils/mail';
 import { schemaValidator } from '@/utils/schemaValidator';
 import { createForgotPasswordToken } from '@/utils/token';
 
-import type { UserToken } from '../activate/route';
-
 export async function POST(req: Request) {
   await connectDB();
 
@@ -62,10 +60,9 @@ export async function PATCH(req: Request) {
     const body: ResetPasswordRequestSchemaType & { token: any } =
       await req.json();
 
-    const result = jwt.verify(
-      body.token,
-      FORGOT_PASSWORD_TOKEN_SECRET
-    ) as UserToken;
+    const result = jwt.verify(body.token, FORGOT_PASSWORD_TOKEN_SECRET) as {
+      id: string;
+    };
 
     const id = new ObjectId(result.id);
 

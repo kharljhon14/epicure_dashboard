@@ -7,6 +7,7 @@ import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
 import InlineAlert from '@/components/InlineAlert';
 import { CreateUserSchema, type CreateUserSchemaType } from '@/schemas/user';
@@ -43,6 +44,7 @@ export default function SignUpForm({ handleAuthState, onClose }: Props) {
 
     if (res.ok) {
       router.push('/');
+      toast.info('An email has been sent to you.', { position: 'top-center' });
       onClose();
     } else {
       const { error } = await res.json();

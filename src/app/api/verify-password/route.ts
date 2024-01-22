@@ -1,7 +1,7 @@
 import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 
 import connectDB from '@/utils/connectDB';
-import { ACTIVATE_TOKEN_SECRET } from '@/utils/enviromentVariables';
+import { FORGOT_PASSWORD_TOKEN_SECRET } from '@/utils/enviromentVariables';
 
 export async function POST(req: Request) {
   await connectDB();
@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const { token } = await req.json();
 
   try {
-    jwt.verify(token, ACTIVATE_TOKEN_SECRET);
+    jwt.verify(token, FORGOT_PASSWORD_TOKEN_SECRET);
 
     return Response.json({ status: 'Success' });
   } catch (err) {
