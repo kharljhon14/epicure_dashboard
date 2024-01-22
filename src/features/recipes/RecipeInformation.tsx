@@ -7,6 +7,7 @@ import { IoChevronBack, IoImageOutline } from 'react-icons/io5';
 import useSWR from 'swr';
 
 import type { GetRecipeResponse } from '@/@types/recipe';
+import type { GetUserResponse } from '@/@types/user';
 import fetcher from '@/utils/fetcher';
 
 interface Props {
@@ -14,10 +15,14 @@ interface Props {
 }
 
 export default function RecipeInformation({ id }: Props) {
+  const { data: userData } = useSWR<GetUserResponse>('/api/user');
+
   const { data, isLoading, error } = useSWR<GetRecipeResponse>(
     `/api/recipes/${id}`,
     fetcher
   );
+
+  console.log(userData);
 
   const router = useRouter();
   if (error) return <div>Failed to load</div>;

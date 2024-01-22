@@ -3,27 +3,37 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Textarea } from '@nextui-org/react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { IoTrashOutline } from 'react-icons/io5';
-import type { KeyedMutator } from 'swr';
+import useSWR from 'swr';
+import type { ScopedMutator } from 'swr/_internal';
 
-import type { GetRecipesResponse } from '@/@types/recipe';
+import type { GetUserResponse } from '@/@types/user';
+import type { RecipeDocument } from '@/models/recipe';
 import type { RecipeSchemaType } from '@/schemas/recipe';
 import { RecipeSchema } from '@/schemas/recipe';
+import fetcher from '@/utils/fetcher';
 
 interface Props {
   onClose(): void;
-  mutate: KeyedMutator<GetRecipesResponse>;
+  mutate: ScopedMutator;
+  selectedRecipe?: RecipeDocument;
 }
 
-export default function RecipeForm({ onClose, mutate }: Props) {
+export default function RecipeForm({ onClose, mutate, selectedRecipe }: Props) {
+  const searchParams = useSearchParams();
+
+  // Get query Params
+  const q = searchParams.get('q');
+  const pageNumber = searchParams.get('pageNumber');
+  const { data: userData } = useSWR<GetUserResponse>('/api/user', fetcher);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
-    register,
     handleSubmit,
     control,
     getValues,
@@ -45,19 +55,46 @@ export default function RecipeForm({ onClose, mutate }: Props) {
       formData.append('image', data.image);
     }
 
-    const res = await fetch('/api/recipes', {
-      method: 'POST',
-      body: formData,
-    });
-    if (res.ok) {
-      onClose();
-      mutate();
+    if (selectedRecipe) {
+      const res = await fetch(`/api/recipes/${selectedRecipe._id}`, {
+        method: 'PATCH',
+        body: formData,
+      });
+      if (res.ok) {
+        onClose();
+        mutate(
+          `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id}`
+        );
+      } else {
+        const { error } = await res.json();
+        console.error(error);
+      }
     } else {
-      const { error } = await res.json();
-      console.error(error);
+      const res = await fetch('/api/recipes', {
+        method: 'POST',
+        body: formData,
+      });
+      if (res.ok) {
+        onClose();
+        mutate(
+          `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id}`
+        );
+      } else {
+        const { error } = await res.json();
+        console.error(error);
+      }
     }
+
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (selectedRecipe) {
+      resetField('name', { defaultValue: selectedRecipe.name });
+      resetField('ingredients', { defaultValue: selectedRecipe.ingredients });
+      resetField('instruction', { defaultValue: selectedRecipe.instruction });
+    }
+  }, [selectedRecipe]);
 
   return (
     <form
@@ -159,35 +196,64 @@ export default function RecipeForm({ onClose, mutate }: Props) {
           </span>
         )}
 
-        <Input
-          {...register('name')}
-          size="sm"
-          label="Name*"
-          isInvalid={!!errors.name?.message}
-          errorMessage={errors.name?.message && errors.name.message}
-          disabled={isLoading}
+        <Controller
+          name="name"
+          control={control}
+          render={({ field: { value, onChange, ...fields } }) => {
+            return (
+              <Input
+                size="sm"
+                label="Name*"
+                isInvalid={!!errors.name?.message}
+                errorMessage={errors.name?.message && errors.name.message}
+                value={value}
+                onChange={onChange}
+                {...fields}
+              />
+            );
+          }}
         />
 
-        <Textarea
-          {...register('ingredients')}
-          size="sm"
-          label="Ingredients*"
-          isInvalid={!!errors.ingredients?.message}
-          errorMessage={
-            errors.ingredients?.message && errors.ingredients.message
-          }
-          disabled={isLoading}
+        <Controller
+          name="ingredients"
+          control={control}
+          render={({ field: { value, onChange, ...fields } }) => {
+            return (
+              <Textarea
+                size="sm"
+                label="Ingredients*"
+                isInvalid={!!errors.ingredients?.message}
+                errorMessage={
+                  errors.ingredients?.message && errors.ingredients.message
+                }
+                disabled={isLoading}
+                value={value}
+                onChange={onChange}
+                {...fields}
+              />
+            );
+          }}
         />
 
-        <Textarea
-          {...register('instruction')}
-          size="sm"
-          label="Instructions*"
-          isInvalid={!!errors.instruction?.message}
-          errorMessage={
-            errors.instruction?.message && errors.instruction.message
-          }
-          disabled={isLoading}
+        <Controller
+          name="instruction"
+          control={control}
+          render={({ field: { value, onChange, ...fields } }) => {
+            return (
+              <Textarea
+                size="sm"
+                label="Instructions*"
+                isInvalid={!!errors.instruction?.message}
+                errorMessage={
+                  errors.instruction?.message && errors.instruction.message
+                }
+                disabled={isLoading}
+                value={value}
+                onChange={onChange}
+                {...fields}
+              />
+            );
+          }}
         />
       </div>
       <Button
@@ -197,7 +263,7 @@ export default function RecipeForm({ onClose, mutate }: Props) {
         disabled={isLoading}
         isLoading={isLoading}
       >
-        Submit
+        {selectedRecipe ? 'Update' : 'Submit'}
       </Button>
     </form>
   );

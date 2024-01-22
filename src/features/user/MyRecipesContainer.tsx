@@ -3,7 +3,7 @@
 import { Pagination } from '@nextui-org/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 import type { GetRecipesResponse } from '@/@types/recipe';
 import type { GetUserResponse } from '@/@types/user';
@@ -23,9 +23,10 @@ export default function MyRecipesContainer() {
   const q = searchParams.get('q');
   const pageNumber = searchParams.get('pageNumber');
 
+  const { mutate } = useSWRConfig();
   const { data: userData } = useSWR<GetUserResponse>('/api/user', fetcher);
-  const { data, isLoading, error, mutate } = useSWR<GetRecipesResponse>(
-    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id}`,
+  const { data, isLoading, error } = useSWR<GetRecipesResponse>(
+    `/api/recipes?pageNumber=${pageNumber ?? '1'}&q=${q ?? ''}&owner=${userData?.user?.id ?? ''}`,
     fetcher
   );
   const [total, setTotal] = useState<number | null>();

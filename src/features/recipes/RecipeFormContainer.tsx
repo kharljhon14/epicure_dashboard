@@ -1,13 +1,11 @@
 import { Button, useDisclosure } from '@nextui-org/react';
 import { IoAdd } from 'react-icons/io5';
-import type { KeyedMutator } from 'swr';
-
-import type { GetRecipesResponse } from '@/@types/recipe';
+import type { ScopedMutator } from 'swr/_internal';
 
 import RecipeModal from './RecipeModal';
 
 interface Props {
-  mutate: KeyedMutator<GetRecipesResponse>;
+  mutate: ScopedMutator;
 }
 
 export default function RecipeFormContainer({ mutate }: Props) {
