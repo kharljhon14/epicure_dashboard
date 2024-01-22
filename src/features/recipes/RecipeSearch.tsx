@@ -14,7 +14,9 @@ export default function RecipeSearch() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    router.push(`${pathName}?q=${searchValue}&pageNumber=1`);
+    if (pathName.includes('recipe'))
+      router.push(`/?q=${searchValue}&pageNumber=1`);
+    else router.push(`${pathName}?q=${searchValue}&pageNumber=1`);
   };
   const handleClear = () => {
     if (q) {
