@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardBody, CardHeader } from '@nextui-org/react';
+import { Card, CardBody, CardHeader, Spinner } from '@nextui-org/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -44,7 +44,7 @@ export default function ActivateAccountPage({ params }: Props) {
 
   return (
     <div>
-      {!isLoading && (
+      {!isLoading ? (
         <div className="flex items-center justify-center">
           {error ? (
             <Card className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg ">
@@ -82,6 +82,13 @@ export default function ActivateAccountPage({ params }: Props) {
               </CardBody>
             </Card>
           )}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center">
+          <Spinner
+            label="Loading..."
+            size="lg"
+          />
         </div>
       )}
     </div>
