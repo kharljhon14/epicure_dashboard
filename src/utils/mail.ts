@@ -4,18 +4,19 @@ import path from 'path';
 import { generateTemplate } from '@/templates/template';
 
 import {
-  MAILTRAP_PASSWORD,
-  MAILTRAP_USER,
+  MAILING_EMAIL,
+  MAILING_PASSWORD,
   VERIFICATION_EMAIL,
 } from './enviromentVariables';
 
 export function generateEmailTransporter() {
   return nodemailer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
+    // host: 'sandbox.smtp.mailtrap.io',
+    // port: 2525,
+    service: 'gmail',
     auth: {
-      user: MAILTRAP_USER,
-      pass: MAILTRAP_PASSWORD,
+      user: MAILING_EMAIL,
+      pass: MAILING_PASSWORD,
     },
   });
 }

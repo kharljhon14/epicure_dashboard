@@ -12,4 +12,6 @@ export const {
   CLOUD_NAME,
   CLOUD_KEY,
   CLOUD_SECRET,
+  MAILING_EMAIL,
+  MAILING_PASSWORD,
 } = env;

@@ -55,7 +55,6 @@ export default function NextUIWrapper({ children }: Props) {
                 <Button
                   variant="bordered"
                   color="primary"
-                  size="sm"
                 >
                   👋 Hello, {data.user.name}!
                 </Button>
@@ -90,7 +89,7 @@ export default function NextUIWrapper({ children }: Props) {
             </Button>
           )}
         </Header>
-        <div className="mb-20 mt-16 md:mx-24 lg:mx-32">{children}</div>
+        <div className="my-12 md:mx-24 lg:mx-32">{children}</div>
         <AuthModal
           isOpen={isOpen}
           onOpenChange={onOpenChange}

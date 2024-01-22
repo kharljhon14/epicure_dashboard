@@ -43,6 +43,7 @@ export default function SignUpForm({ handleAuthState, onClose }: Props) {
     });
 
     if (res.ok) {
+      handleAuthState('signin');
       router.push('/');
       toast.info('An email has been sent to you.', { position: 'top-center' });
       onClose();
