@@ -30,7 +30,7 @@ export async function sendVericifationTokenEmail(
     }),
   };
 
-  sgMail.send(msg);
+  await sgMail.send(msg);
 }
 
 export async function sendForgotPasswordTokenEmail(
@@ -51,5 +51,5 @@ export async function sendForgotPasswordTokenEmail(
       btnTitle: 'Reset',
     }),
   };
-  sgMail.send(msg);
+  await sgMail.send(msg);
 }
