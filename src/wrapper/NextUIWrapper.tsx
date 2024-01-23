@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { type PropsWithChildren } from 'react';
+import { type PropsWithChildren, useEffect } from 'react';
 import { Flip, ToastContainer } from 'react-toastify';
 import useSWR from 'swr';
 
@@ -33,6 +33,12 @@ export default function NextUIWrapper({ children }: Props) {
     mutate();
     router.push('/');
   };
+
+  useEffect(() => {
+    if (data?.user.id) {
+      onClose();
+    }
+  }, [data]);
 
   return (
     <NextUIProvider>
