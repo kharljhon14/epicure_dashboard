@@ -8,7 +8,6 @@ export interface UserDocument {
   name: string;
   email: string;
   password: string;
-  verified: boolean;
   avatar?: { url: string; publicId: string };
 }
 
@@ -37,10 +36,6 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
       type: Object,
       url: String,
       publicId: String,
-    },
-    verified: {
-      type: Boolean,
-      default: false,
     },
   },
   { timestamps: true }
