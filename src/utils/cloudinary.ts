@@ -3,18 +3,27 @@ import type { UploadApiResponse } from 'cloudinary';
 import cloudinary from '@/cloudinary';
 
 export async function uploadImageToCloudinary(
-  buffer: Uint8Array
+  fileUri: string
 ): Promise<UploadApiResponse> {
   return new Promise((resolve, reject) => {
     cloudinary.uploader
-      .upload_stream({}, (err, result) => {
-        if (err) {
-          reject(err);
-          return;
-        }
+      .upload(
+        fileUri,
+        { folder: 'epicure', invalidate: true },
+        (err, result) => {
+          if (err) {
+            reject(err);
+            return;
+          }
 
-        if (result) resolve(result);
+          if (result) resolve(result);
+        }
+      )
+      .then((result) => {
+        resolve(result);
       })
-      .end(buffer);
+      .catch((error) => {
+        reject(error);
+      });
   });
 }

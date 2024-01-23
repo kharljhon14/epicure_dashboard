@@ -93,9 +93,10 @@ export async function PATCH(req: Request, { params }: Params) {
         await cloudinary.uploader.destroy(recipe.image.publicId);
       }
       const arrayBuffer = await body.image.arrayBuffer();
-      const buffer = new Uint8Array(arrayBuffer);
+      const base64Data = Buffer.from(arrayBuffer).toString('base64');
+      const fileUri = `data:${body.image.type};base64,${base64Data}`;
 
-      const result = await uploadImageToCloudinary(buffer);
+      const result = await uploadImageToCloudinary(fileUri);
 
       if (result) {
         recipe.image = {
