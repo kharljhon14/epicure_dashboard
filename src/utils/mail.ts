@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import nodemailer from 'nodemailer';
 import path from 'path';
 
@@ -11,7 +12,6 @@ import {
 
 export function generateEmailTransporter() {
   return nodemailer.createTransport({
-    port: 465,
     service: 'Gmail',
     auth: {
       user: MAILING_EMAIL,
@@ -31,26 +31,52 @@ export async function sendVericifationTokenEmail(
 ) {
   const transport = generateEmailTransporter();
 
+  await new Promise((resolve, reject) => {
+    // verify connection configuration
+    transport.verify((error, success) => {
+      if (error) {
+        console.log(error);
+        reject(error);
+      } else {
+        console.log('Server is ready to take our messages');
+        resolve(success);
+      }
+    });
+  });
+
   const welcomeMessage = `Greetings, ${profile.name}! Welcome to Epicure. Kindly use the provided OTP to verify your email.`;
 
-  await transport.sendMail({
-    to: profile.email,
-    from: VERIFICATION_EMAIL,
-    subject: 'Welcome to Epicure!',
-    html: generateTemplate({
-      title: 'Welcome to Epicure!',
-      message: welcomeMessage,
-      logo: 'cid:logo',
-      link: url,
-      btnTitle: 'Activate',
-    }),
-    attachments: [
+  await new Promise((resolve, reject) => {
+    transport.sendMail(
       {
-        filename: 'logo.jpg',
-        path: path.join(__dirname, '../../../../../public/logo.jpg'),
-        cid: 'logo',
+        to: profile.email,
+        from: VERIFICATION_EMAIL,
+        subject: 'Welcome to Epicure!',
+        html: generateTemplate({
+          title: 'Welcome to Epicure!',
+          message: welcomeMessage,
+          logo: 'cid:logo',
+          link: url,
+          btnTitle: 'Activate',
+        }),
+        attachments: [
+          {
+            filename: 'logo.jpg',
+            path: path.join(__dirname, '../../../../../public/logo.jpg'),
+            cid: 'logo',
+          },
+        ],
       },
-    ],
+      (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      }
+    );
   });
 }
 
