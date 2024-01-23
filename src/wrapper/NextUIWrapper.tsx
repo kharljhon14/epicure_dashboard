@@ -35,7 +35,7 @@ export default function NextUIWrapper({ children }: Props) {
   };
 
   useEffect(() => {
-    if (data?.user.id) {
+    if (data?.user?.id) {
       onClose();
     }
   }, [data]);
