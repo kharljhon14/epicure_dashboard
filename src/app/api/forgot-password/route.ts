@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 
@@ -83,7 +84,7 @@ export async function PATCH(req: Request) {
         { status: 403 }
       );
 
-    user.password = body.password;
+    user.password = await hash(body.password, 10);
     await user.save();
 
     return Response.json({ status: 'Success' });
