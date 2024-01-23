@@ -14,4 +14,5 @@ export const {
   CLOUD_SECRET,
   MAILING_EMAIL,
   MAILING_PASSWORD,
+  SENDGRID_API_KEY,
 } = env;

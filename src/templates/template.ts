@@ -2,12 +2,12 @@ interface Options {
   title: string;
   message: string;
   link: string;
-  logo: string;
+
   btnTitle: string;
 }
 
 export function generateTemplate(options: Options) {
-  const { title, message, link, logo, btnTitle } = options;
+  const { title, message, link, btnTitle } = options;
 
   return `
         <!DOCTYPE html>
@@ -311,38 +311,7 @@ export function generateTemplate(options: Options) {
                                     "
                                     width="100%"
                                   >
-                                    <tr>
-                                      <td
-                                        class="pad"
-                                        style="
-                                          width: 100%;
-                                          padding-right: 0px;
-                                          padding-left: 0px;
-                                          padding-top: 5px;
-                                          padding-bottom: 5px;
-                                        "
-                                      >
-                                        <div
-                                          align="center"
-                                          class="alignment"
-                                          style="line-height: 10px"
-                                        >
-                                          <img
-                                            alt="Company Logo"
-                                            src="${logo}"
-                                            style="
-                                              display: block;
-                                              height: auto;
-                                              border: 0;
-                                              width: 147px;
-                                              max-width: 100%;
-                                            "
-                                            title="Company Logo"
-                                            width="147"
-                                          />
-                                        </div>
-                                      </td>
-                                    </tr>
+                                   
                                   </table>
                                 </td>
                                 <td
