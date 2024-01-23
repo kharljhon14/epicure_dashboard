@@ -19,11 +19,14 @@ export async function GET() {
 
     const user = await User.findById(userId);
 
-    if (!user)
+    if (!user) {
+      cookiesStore.delete('session');
+
       return Response.json(
         { error: 'Must be authenticated!' },
         { status: 401 }
       );
+    }
 
     return Response.json({
       status: 'Success',
