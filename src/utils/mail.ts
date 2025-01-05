@@ -1,15 +1,21 @@
-import sgMail from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
 import { generateTemplate } from '@/templates/template';
 
-import { MAILING_EMAIL, SENDGRID_API_KEY } from './enviromentVariables';
-
-sgMail.setApiKey(SENDGRID_API_KEY);
+import { MAILING_EMAIL, MAILING_PASSWORD } from './enviromentVariables';
 
 interface Profile {
   name: string;
   email: string;
 }
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: MAILING_EMAIL,
+    pass: MAILING_PASSWORD,
+  },
+});
 
 export async function sendVericifationTokenEmail(
   profile: Profile,
@@ -30,7 +36,7 @@ export async function sendVericifationTokenEmail(
     }),
   };
 
-  await sgMail.send(msg);
+  await transporter.sendMail(msg);
 }
 
 export async function sendForgotPasswordTokenEmail(
@@ -51,5 +57,5 @@ export async function sendForgotPasswordTokenEmail(
       btnTitle: 'Reset',
     }),
   };
-  await sgMail.send(msg);
+  await transporter.sendMail(msg);
 }
