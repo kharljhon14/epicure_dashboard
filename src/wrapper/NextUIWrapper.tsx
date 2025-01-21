@@ -95,7 +95,7 @@ export default function NextUIWrapper({ children }: Props) {
             </Button>
           )}
         </Header>
-        <div className="my-12 md:mx-24 lg:mx-32">{children}</div>
+        <div className="container mx-auto my-12">{children}</div>
         <AuthModal
           isOpen={isOpen}
           onOpenChange={onOpenChange}
